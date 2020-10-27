@@ -10,4 +10,9 @@
         <a [routerLink]="['/admin']" routerLinkActive="router-link-active">Admin</a>
     </li>
 </ul>
-<router-outlet></router-outlet>
+<app-header></app-header>
+<app-navbar></app-navbar>
+<div id="main">
+    <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>
