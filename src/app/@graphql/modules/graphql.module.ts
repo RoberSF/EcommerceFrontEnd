@@ -1,0 +1,48 @@
+import { NgModule } from '@angular/core';
+import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
+import { Apollo, ApolloModule } from 'apollo-angular';
+import { onError } from 'apollo-link-error';
+import { ApolloLink } from 'apollo-link';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpClientModule } from '@angular/common/http';
+
+
+//**************************************************************************************************
+//                            Módulo de conexión con graphql                                                           
+//**************************************************************************************************
+
+@NgModule({
+  declarations: [],
+  imports: [
+    HttpClientModule,
+    ApolloModule,
+    HttpLinkModule
+  ]
+})
+
+export class GraphqlModule {
+   constructor(apollo: Apollo, httpLink: HttpLink ) {
+     
+    // Para campturar los errores de consulta o de red
+
+    const errorLink = onError(({graphQLErrors,networkError}) => {
+      if(graphQLErrors) {
+        console.log('Graphql Errors', graphQLErrors);
+      }
+
+      if (networkError) {
+        console.log('Networkd Errors', networkError);
+      }
+
+    });
+
+    const uri = 'http://localhost:2002/graphql'; //endpoint
+
+    // Hacemos la conexión con el endpoint
+    const link = ApolloLink.from([errorLink,httpLink.create({uri})]);
+    apollo.create({
+      link,
+      cache: new InMemoryCache()
+    });
+   }
+ }
