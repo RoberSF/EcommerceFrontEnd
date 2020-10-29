@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { LOGIN_QUERY } from '../operations/query/user';
+import { LOGIN_QUERY, USER_LIST_QUERY } from '@graphql/operations/query/user';
 import {map} from 'rxjs/operators'
 @Injectable({
   providedIn: 'root'
@@ -21,13 +21,25 @@ export class ApiService {
       variables: {
         email: email,
         password: password,
-      }
+      },
+      fetchPolicy: 'network-only'
     }).valueChanges.pipe(map((result) => {
       return result.data
     })
     )};
 
-  getUsers(){  }
+
+  
+  getUsers(){ 
+    return this.apollo.watchQuery(
+      {
+      query: USER_LIST_QUERY,
+      fetchPolicy: 'network-only'
+      }
+    ).valueChanges.pipe(map((result) => {
+      return  result.data;
+    }));
+    }
 
   getMe(){}
 

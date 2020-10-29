@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { USER_FRAGMENT } from '@graphql/operations/fragment/user';
 
 
 //**************************************************************************************************
@@ -15,5 +16,21 @@ export const LOGIN_QUERY = gql`
     }
   }
   `;
+
+//Sería ponerlo igual que lo haríamos en apollo server
+export const USER_LIST_QUERY = gql`
+ query {
+     users {
+        status
+        message
+        users {
+            ...UserObject
+        }
+     }
+    ${USER_FRAGMENT}
+ }
+  `;
+
+
 
 
