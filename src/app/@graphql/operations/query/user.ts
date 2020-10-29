@@ -7,7 +7,7 @@ import { USER_FRAGMENT } from '@graphql/operations/fragment/user';
 //**************************************************************************************************
 
 export const LOGIN_QUERY = gql`
- query getLogin($email:string!, $password:string!){
+ query getLogin($email:String!, $password:String!){
 
     login(email: $email, password: $password) {
       status
@@ -17,19 +17,33 @@ export const LOGIN_QUERY = gql`
   }
   `;
 
+
 //Sería ponerlo igual que lo haríamos en apollo server
-export const USER_LIST_QUERY = gql`
- query {
-     users {
-        status
-        message
+export const USERS_LIST_QUERY = gql`
+    query usersList ($include: Boolean!){
         users {
-            ...UserObject
+            status
+            message
+            users {
+                ...UserObject
+            }
         }
-     }
-    ${USER_FRAGMENT}
- }
-  `;
+    }
+    ${ USER_FRAGMENT }
+`;
+
+export const ME_DATA_QUERY = gql`
+    query meData($include: Boolean!){
+        me {
+            status
+            message
+            user {
+                ...UserObject
+            }
+        }
+    }
+    ${ USER_FRAGMENT }
+`;
 
 
 

@@ -21,6 +21,10 @@ export class HomeComponent implements OnInit {
     this.apiService.getUsers().subscribe((data) => {
       console.log(data);
     })
+
+    this.apiService.getMe().subscribe((data) => {
+      console.log(data);
+    })
   }
 
 }

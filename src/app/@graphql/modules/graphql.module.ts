@@ -21,28 +21,27 @@ import { HttpClientModule } from '@angular/common/http';
 })
 
 export class GraphqlModule {
-   constructor(apollo: Apollo, httpLink: HttpLink ) {
-     
-    // Para campturar los errores de consulta o de red
-
-    const errorLink = onError(({graphQLErrors,networkError}) => {
-      if(graphQLErrors) {
-        console.log('Graphql Errors', graphQLErrors);
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+    // Para capturar los errores de consulta y/o de red
+    const errorLink = onError(({graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        console.log('GraphQL Errors', graphQLErrors);
       }
 
       if (networkError) {
         console.log('Networkd Errors', networkError);
       }
-
     });
-
-    const uri = 'http://localhost:2002/graphql'; //endpoint
-
-    // Hacemos la conexión con el endpoint
-    const link = ApolloLink.from([errorLink,httpLink.create({uri})]);
+    const uri = 'http://localhost:2002/graphql';
+    const link = ApolloLink.from(
+      [
+        errorLink,
+        httpLink.create({uri})
+      ]
+    );
     apollo.create({
       link,
       cache: new InMemoryCache()
     });
-   }
- }
+  }
+}
