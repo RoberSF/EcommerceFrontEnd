@@ -4,6 +4,10 @@ import { LOGIN_QUERY,ME_DATA_QUERY } from '@graphql/operations/query/user';
 import { Apollo } from 'apollo-angular';
 import {map} from 'rxjs/operators'
 import { HttpHeaders } from '@angular/common/http';
+import { ISession } from '../@public/core/Interfaces/session';
+import { IMeData } from '@shop/core/Interfaces/session';
+import { Subject } from 'rxjs';
+
 
 
 @Injectable({
@@ -17,14 +21,57 @@ export class AuthService extends ApiService {
   //  por este motivo se pone el super                                                        
   //**************************************************************************************************
   
+  accessVar = new Subject<IMeData>();
+  accessVar$ = this.accessVar.asObservable();
+
   constructor(apollo:Apollo) { 
     super(apollo);
   }
 
 
+updateSession(newValue: IMeData) {
+   this.accessVar.next(newValue);
+}
+
+getSession(): ISession {
+  return JSON.parse(localStorage.getItem('session'));
+}
+
+
+saveSession(token: string, expiresTimeInHours = 24) {
+  const date = new Date();
+   date.setHours(date.getHours() + expiresTimeInHours);
+
+  const session: ISession = {
+    expiresIn: new Date(date).toISOString(),
+    token
+  };
+  localStorage.setItem('session', JSON.stringify(session));
+}
+
+start() {
+  if (this.getSession() !== null) {
+
+    this.getMe().subscribe( (result: IMeData) => {
+      if( !result.status) {
+          this.resetSession();
+          return
+      }
+      this.updateSession(result);
+    })
+    console.log('Session Iniciada');
+    return
+  }
+  this.updateSession({
+    status:false
+  });
+  console.log('Sesion no iniciada');
+};
+
 // Método de utilización de las funciones de graphql que consume la Api
 login(email: String, password: String) { 
-  return this.get(LOGIN_QUERY, {email,password}).pipe(map((result:any) => {
+  return this.get(LOGIN_QUERY, {email,password,include: false}).pipe(map((result:any) => {
+    this.updateSession({status:true})
     return result.login;
   })
   )};
@@ -32,10 +79,16 @@ login(email: String, password: String) {
   getMe(){
     return this.get(ME_DATA_QUERY,{include: false},
        { headers: new HttpHeaders({
-          Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVmOTdkZDc4ZDFjZmYyM2NlODk5MDIzMyIsIm5hbWUiOiJBbGV4IiwibGFzdG5hbWUiOiJTYW5jaGV6IiwiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpZCI6Mn0sImlhdCI6MTYwNDAwNTExNCwiZXhwIjoxNjA0MDkxNTE0fQ.ja9ufuO0ZGGlD1CbBus9RxBXdQUyDTof_iDyzmUwppg'
+          Authorization: (this.getSession() as ISession).token
         })
       }).pipe(map((result:any) => {
       return  result.me;
     }));
+  }
+
+
+  resetSession() {
+    localStorage.removeItem('session');
+    this.updateSession({status:false});
   }
 }

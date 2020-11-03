@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@shop/*": ["src/app/@public/*"],
       "@admin/*": ["src/app/@admin/*"],

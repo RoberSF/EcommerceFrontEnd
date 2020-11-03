@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { IMeData } from '../../Interfaces/session';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  session: IMeData = {
+    status: false
+  };
+  access = false;
+  role: string;
+
+  constructor(private auth: AuthService) {
+    this.auth.accessVar$.subscribe( (result) => {
+      console.log(result.status);
+      this.session = result;
+      this.access = this.session.status;
+      this.role = this.session.user.role;
+    });
+   }
 
   ngOnInit(): void {
+  }
+
+  logOut() {
+    this.auth.resetSession();
   }
 
 }
