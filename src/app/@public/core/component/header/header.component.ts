@@ -10,14 +10,14 @@ import { IMeData } from '../../Interfaces/session';
 export class HeaderComponent implements OnInit {
 
   session: IMeData = {
-    status: false
+    status: false,
   };
   access = false;
   role: string;
 
   constructor(private auth: AuthService) {
     this.auth.accessVar$.subscribe( (result) => {
-      console.log(result.status);
+      //console.log(result.status);
       this.session = result;
       this.access = this.session.status;
       this.role = this.session.user.role;

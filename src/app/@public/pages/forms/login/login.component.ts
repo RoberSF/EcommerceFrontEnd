@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   }
   rememeberme = false;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService,private router: Router) { }
 
   ngOnInit(): void {
     init_plugins();
@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
           timer: 3000,
           timerProgressBar: true
         })
+        this.router.navigate(['/home']);
       }
     })
     // let usuario: Usuario = new Usuario(null, form.value.email, form.value.password);

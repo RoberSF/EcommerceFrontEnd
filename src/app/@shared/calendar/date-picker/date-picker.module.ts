@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePickerComponent } from './date-picker.component';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -9,7 +10,8 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
   declarations: [DatePickerComponent],
   imports: [
     CommonModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    FormsModule
   ],
   exports: [
     DatePickerComponent
