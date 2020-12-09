@@ -40,7 +40,7 @@ getSession(): ISession {
 
 saveSession(token: string, expiresTimeInHours = 24) {
   const date = new Date();
-   date.setHours(date.getHours() + expiresTimeInHours);
+  date.setHours(date.getHours() + expiresTimeInHours);
 
   const session: ISession = {
     expiresIn: new Date(date).toISOString(),
@@ -85,8 +85,7 @@ login(email: String, password: String) {
       return  result.me;
     }));
   }
-
-
+  
   resetSession() {
     localStorage.removeItem('session');
     this.updateSession({status:false});
