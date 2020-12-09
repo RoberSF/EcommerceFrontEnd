@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   logIn(form: NgForm) {
 
     this.auth.login(this.login.email, this.login.password).subscribe((result: IResultLogin) => {
-      console.log(result);
+      // console.log(result);
       if(result.status && result.token !== null) {
         this.auth.saveSession(result.token);
         this.auth.updateSession(result);

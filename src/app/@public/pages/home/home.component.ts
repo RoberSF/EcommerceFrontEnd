@@ -15,17 +15,17 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     //Obtenemos la data del servicio
-    this.auth.login('test1@gmail.com', '123').subscribe((data) => {
-      console.log(data);
-    });
+    // this.auth.login('test1@gmail.com', '123').subscribe((data) => {
+    //   console.log(data);
+    // });
 
     // Obtenemos la información de los usuarios
-    this.userService.getUsers().subscribe((data) => {
-      console.log(data);
+    this.userService.getUsers(1,2).subscribe((data) => {
+      // console.log(data);
     })
 
     this.auth.getMe().subscribe((data) => {
-      console.log(data);
+      // console.log(data);
     })
   }
 

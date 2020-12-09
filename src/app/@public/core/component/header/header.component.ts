@@ -14,13 +14,14 @@ export class HeaderComponent implements OnInit {
   };
   access = false;
   role: string;
+  userLabel: string =  ''
 
   constructor(private auth: AuthService) {
     this.auth.accessVar$.subscribe( (result) => {
-      //console.log(result.status);
       this.session = result;
       this.access = this.session.status;
       this.role = this.session.user.role;
+      this.userLabel = `${ this.session.user?.email }`;
     });
    }
 
