@@ -33,3 +33,37 @@ export async function formBasicDialog(
       },
     });
   }
+
+
+  //**************************************************************************************************
+  //                              Opciones con detalles                                                           
+  //**************************************************************************************************
+  
+  export async function optionsWithDetails(
+    title: string,
+    html: string,
+    width: number | string,
+    confirmButtonText: string = '',
+    cancelButtonText: string = ''
+  ) {
+    return await Swal.fire({
+      title,
+      html,
+      width: `${width}px`,
+      showCloseButton: true,
+      showCancelButton: true,
+      confirmButtonColor: '#6c757d',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText,
+      cancelButtonText,
+    }).then((result) => {
+      console.log(result);
+      if (result.value) {
+        console.log('Editar');
+        return true;
+      } else if (result.dismiss.toString() === 'cancel') {
+        console.log('Bloquear');
+        return false;
+      }
+    });
+  }

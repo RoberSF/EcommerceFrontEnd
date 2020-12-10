@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GENRE_LIST_QUERY } from '@graphql/operations/query/genre';
 import { ITableColumns } from '@shop/core/Interfaces/table-columns.iterface';
 import { DocumentNode } from 'graphql';
-import { formBasicDialog } from 'src/app/@shared/alerts/alerts';
+import { formBasicDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { GenresService } from 'src/app/services/genres.service';
 import { IResultData } from '../../../@public/core/Interfaces/result-data-interface';
@@ -55,7 +55,7 @@ export class GenresComponent implements OnInit  {
   //           los botones implementados en el table-pagination                                                 
   //**************************************************************************************************
     
-  buttonsEdit($event) {
+  async buttonsEdit($event) {
     console.log($event);
 
     // Coger la información para las acciones por separado
@@ -75,18 +75,18 @@ export class GenresComponent implements OnInit  {
         this.updateForm(html, genre);
         break;
       case 'info':
-        // const result = await optionsWithDetails(
-        //   'Detalles',
-        //   `${genre.name} (${genre.slug})`,
-        //   375,
-        //   '<i class="fas fa-edit"></i> Editar', // true
-        //   '<i class="fas fa-lock"></i> Bloquear'
-        // ); // false
-        // if (result) {
-        //   this.updateForm(html, genre);
-        // } else if (result === false) {
-        //   this.blockForm(genre);
-        // }
+        const result = await optionsWithDetails(
+          'Detalles',
+          `${genre.name} (${genre.slug})`,
+          375,
+          '<i class="fas fa-edit"></i> Editar', // true
+          '<i class="fas fa-lock"></i> Bloquear'
+        ); // false
+        if (result) {
+          this.updateForm(html, genre);
+        } else if (result === false) {
+          // this.blockForm(genre);
+        }
         break;
       case 'block':
         // this.blockForm(genre);
