@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Psrts App
+
+La app se divide en función del tipo de usuario(client-admin). Para cliente será sólo un ecommerce y para admin hay una parte pública y una parte de administración de la tienda. 
+En el mismo código diferenciamos esas dos partes con @admin @public.
+
+El objetivo es hacer el código lo más rehutilizable posible compartiendo componentes. Para ello tenemos una parte del código llamada @shared dónde creamos los componentes tales
+como las tablas de users o genres enviando los datos entre componentes padres e hijos con mediación de los service. 
+
+## @shared
+
+Table-pagination se comparte para ver las diferentes tablas. Enviamos los datos desde el módulo al componente compartido.

@@ -1,5 +1,5 @@
-<div class="d-flex justify-content-between p-2">
-    <button class="btn btn-success float-right mr-3 mb-2">
+<div class="d-flex justify-content-between p-2 float-right">
+    <button (click)="manageAction('add', '')" class="btn btn-success float-right mr-3 mb-2">
       <i class="fas fa-plus-circle"></i> &nbsp; Añadir
     </button>
 </div>
@@ -20,11 +20,13 @@
         <thead>
             <tr>
                 <th scope="col" *ngFor="let column of tableColumns">{{column.label}}</th>
+                <th scope="col">Gestión</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of data$ | async">
                 <td *ngFor="let value of tableColumns" scope="row">{{data[value.property]}}</td>
+                <td scope="row">Buttons</td>
             </tr>
         </tbody>
     </table>
