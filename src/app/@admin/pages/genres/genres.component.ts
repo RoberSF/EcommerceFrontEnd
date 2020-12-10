@@ -63,8 +63,8 @@ export class GenresComponent implements OnInit  {
     const genre = $event[1];
 
     // Cogemos el valor por defecto
-    // const defaultValue = genre.name !== undefined && genre.name !== '' ? genre.name : '';
-    const html = `<input id="name" value="defaultValue" class="swal2-input" required>`;
+    const defaultValue = genre.name !== undefined && genre.name !== '' ? genre.name : '';
+    const html = `<input id="name" value="${defaultValue}" class="swal2-input" required>`;
 
     switch (action) {
       case 'add':
@@ -72,7 +72,7 @@ export class GenresComponent implements OnInit  {
         this.addForm(html);
         break;
       case 'edit':
-        // this.updateForm(html, genre);
+        this.updateForm(html, genre);
         break;
       case 'info':
         // const result = await optionsWithDetails(
@@ -116,6 +116,30 @@ export class GenresComponent implements OnInit  {
           return;
         }
           basicAlert(TYPE_ALERT.WARNING, res.message);
+      });
+    }
+  }
+
+  //**************************************************************************************************
+  //                    Métodos para actualizar género                                                           
+  //**************************************************************************************************
+  
+  private async updateForm(html: string, genre: any) {
+    const result = await formBasicDialog('Modificar género', html, 'name');
+    console.log(result);
+    this.updateGenre(genre.id, result);
+  }
+
+  private updateGenre(id: string, result) {
+    console.log(id, result.value);
+    if (result.value) {
+      this.genreService.update(id, result.value).subscribe((res: any) => {
+        console.log(res);
+        if (res.status) {
+          basicAlert(TYPE_ALERT.SUCCESS, res.message);
+          return;
+        }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
       });
     }
   }

@@ -19,3 +19,24 @@ mutation addGenre($genre: String!) {
   }
   ${GENRE_FRAGMENT}
   `;
+
+
+
+//**************************************************************************************************
+//              Método de actualizar género de la api de graphql                                                          
+//**************************************************************************************************
+  
+export const MODIFY_GENRE = gql`
+
+mutation updateGenre($id: ID!, $genre: String!) {
+  updateGenre(id: $id, genre: $genre) {
+    status
+    message
+    genre {
+      ...GenreObject
+    }
+  }
+}
+  ${GENRE_FRAGMENT}
+  `;
+
