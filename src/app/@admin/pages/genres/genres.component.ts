@@ -43,6 +43,10 @@ export class GenresComponent implements OnInit  {
     ]
   }
 
+  buttonsEdit($event) {
+    console.log($event);
+  }
+
 
 
 }
