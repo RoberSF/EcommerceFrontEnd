@@ -14,13 +14,28 @@ import { ITableColumns } from '@shop/core/Interfaces/table-columns.iterface';
 })
 export class TablePaginationComponent implements OnInit {
 
+
+//**************************************************************************************************
+//                                      Entrada de data                                                           
+//**************************************************************************************************
+
 @Input() query: DocumentNode = USERS_LIST_QUERY;
 @Input() context: object;
 @Input() itemsPerPage = 20;
 @Input() include = true;
 @Input() resultData: IResultData;
 @Input() tableColumns: Array<ITableColumns> = undefined
+
+//**************************************************************************************************
+//                                     Salida de data                                                           
+//**************************************************************************************************
+
 @Output() manageItem = new EventEmitter<Array<any>>();
+
+//**************************************************************************************************
+//                                       Variables                                                           
+//**************************************************************************************************
+
 infoPage: IInfoPage;
 data$: Observable<any>;
 
@@ -71,6 +86,11 @@ data$: Observable<any>;
     this.loadData();
   }
 
+
+  //**************************************************************************************************
+  //     Mñetodo para manejar las acciones de los botones edit,info & block                                                           
+  //**************************************************************************************************
+  
   manageAction(action: string, data: any) {
     console.log(action, data);
     this.manageItem.emit([action, data]);

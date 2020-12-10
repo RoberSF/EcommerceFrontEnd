@@ -26,7 +26,19 @@
         <tbody>
             <tr *ngFor="let data of data$ | async">
                 <td *ngFor="let value of tableColumns" scope="row">{{data[value.property]}}</td>
-                <td scope="row">Buttons</td>
+                <td>
+                    <button type="button" class="btn btn-secondary" (click)="manageAction('edit', data)">
+                      <i class="fas fa-edit"></i></button
+                    >&nbsp;
+                    <button type="button" class="btn btn-info"
+                    (click)="manageAction('info', data)">
+                      <i class="fas fa-info"></i></button
+                    >&nbsp;
+                    <button type="button" class="btn btn-danger"
+                    (click)="manageAction('block', data)">
+                      <i class="fas fa-lock"></i>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
