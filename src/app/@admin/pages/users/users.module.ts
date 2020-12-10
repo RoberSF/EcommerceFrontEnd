@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
 import { TablePaginationModule } from '../../../@shared/table-pagination/table-pagination.module';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { TablePaginationModule } from '../../../@shared/table-pagination/table-p
   imports: [
     CommonModule,
     UsersRoutingModule,
-    TablePaginationModule
+    TablePaginationModule,
+    NgbPaginationModule
   ]
 })
 export class UsersModule { }
