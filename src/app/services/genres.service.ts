@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApiService } from '@graphql/services/api.service';
 import { map } from 'rxjs/operators';
-import { ADD_GENRE, MODIFY_GENRE } from '@graphql/operations/mutation/genre';
+import { ADD_GENRE, BLOCK_GENRE, MODIFY_GENRE } from '@graphql/operations/mutation/genre';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,16 @@ update(id: string, genre: string) {
       genre
     }, {}).pipe(map( (result: any) => {
       return result.updateGenre;
+    }));
+}
+
+block(id: string) {
+  return this.set(
+    BLOCK_GENRE,
+    {
+      id
+    }, {}).pipe(map( (result: any) => {
+      return result.blockGenre;
     }));
 }
 

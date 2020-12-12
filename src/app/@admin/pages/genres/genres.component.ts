@@ -56,7 +56,6 @@ export class GenresComponent implements OnInit  {
   //**************************************************************************************************
     
   async buttonsEdit($event) {
-    console.log($event);
 
     // Coger la información para las acciones por separado
     const action = $event[0];
@@ -85,11 +84,11 @@ export class GenresComponent implements OnInit  {
         if (result) {
           this.updateForm(html, genre);
         } else if (result === false) {
-          // this.blockForm(genre);
+          this.blockForm(genre);
         }
         break;
       case 'block':
-        // this.blockForm(genre);
+        this.blockForm(genre);
         break;
       default:
         break;
@@ -103,14 +102,12 @@ export class GenresComponent implements OnInit  {
                 
   private async addForm(html: string) {
     const result = await formBasicDialog('Añadir género', html, 'name');
-    console.log(result);
     this.addGenre(result);
   }
 
   private addGenre(result) {
     if (result.value) {
       this.genreService.add(result.value).subscribe((res: any) => {
-        console.log(res);
         if (res.status) {
           basicAlert(TYPE_ALERT.SUCCESS, res.message);
           return;
@@ -126,12 +123,10 @@ export class GenresComponent implements OnInit  {
   
   private async updateForm(html: string, genre: any) {
     const result = await formBasicDialog('Modificar género', html, 'name');
-    console.log(result);
     this.updateGenre(genre.id, result);
   }
 
   private updateGenre(id: string, result) {
-    console.log(id, result.value);
     if (result.value) {
       this.genreService.update(id, result.value).subscribe((res: any) => {
         console.log(res);
@@ -143,6 +138,37 @@ export class GenresComponent implements OnInit  {
       });
     }
   }
+
+  //**************************************************************************************************
+  //              Método para bloquear un género                                                           
+  //**************************************************************************************************
+  
+
+  private blockGenre(id: string) {
+    this.genreService.block(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+      basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+  private async blockForm(genre: any) {
+    const result = await optionsWithDetails(
+      '¿Bloquear?',
+      `Si bloqueas el item seleccionado, no se mostrará en la lista`,
+      430,
+      'No, no bloquear',
+      'Si, bloquear'
+    );
+    if (result === false) {
+      // Si resultado falso, queremos bloquear
+      this.blockGenre(genre.id);
+    }
+  }
+
+
 
 
 }

@@ -25,7 +25,7 @@ mutation addGenre($genre: String!) {
 //**************************************************************************************************
 //              Método de actualizar género de la api de graphql                                                          
 //**************************************************************************************************
-  
+
 export const MODIFY_GENRE = gql`
 
 mutation updateGenre($id: ID!, $genre: String!) {
@@ -39,4 +39,18 @@ mutation updateGenre($id: ID!, $genre: String!) {
 }
   ${GENRE_FRAGMENT}
   `;
+  
 
+//**************************************************************************************************
+//                 Método de bloquear género de la api de graphql                                                           
+//**************************************************************************************************
+
+export const BLOCK_GENRE = gql`
+
+mutation blockGenre($id: ID!) {
+  blockGenre(id: $id) {
+    status
+    message
+  }
+}
+  `;
