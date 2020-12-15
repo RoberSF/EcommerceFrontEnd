@@ -17,6 +17,29 @@ mutation addUser($user: UserInput!, $include: Boolean!) {
   ${ USER_FRAGMENT }
   `;
 
+export const MODIFY_USER = gql`
+
+mutation updateUser($user: UserInput!, $include: Boolean!) {
+  updateUser(user: $user) {
+      status
+      message
+      user {
+        ...UserObject
+      }
+    }
+  }
+  ${ USER_FRAGMENT }
+  `;
+
+export const BLOCK_USER = gql`
+mutation blockUser($id: ID!) {
+  blockUser(id: $id) {
+      status
+      message
+    }
+  }
+  `;
+
 
 
 

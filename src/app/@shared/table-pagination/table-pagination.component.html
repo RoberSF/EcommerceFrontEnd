@@ -43,10 +43,10 @@
         </tbody>
     </table>
 </div>
-<div *ngIf="infoPage.pages > 1" class="d-flex justify-content-between p-2">
+<div class="d-flex justify-content-between p-2">
     <ngb-pagination [collectionSize]="infoPage.total" [(page)]="infoPage.page" (pageChange)="changePage()" [pageSize]="infoPage.itemsPerPage">
     </ngb-pagination>
-    <select *ngIf="infoPage.pages > 1" class="custom-select" style="width: auto;" [(ngModel)]="infoPage.itemsPerPage" (ngModelChange)="loadData()">
+    <select class="custom-select" style="width: auto;" [(ngModel)]="infoPage.itemsPerPage" (ngModelChange)="loadData()">
         <option [ngValue]="5">5 items per page</option>
         <option [ngValue]="10">10 items per page</option>
         <option [ngValue]="15">15 items per page</option>
