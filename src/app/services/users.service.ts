@@ -3,8 +3,9 @@ import { Apollo } from 'apollo-angular';
 import { ApiService } from '../@graphql/services/api.service';
 import { USERS_LIST_QUERY } from '@graphql/operations/query/user';
 import {map} from 'rxjs/operators'
-import { BLOCK_USER, MODIFY_USER, REGISTER_USER } from '@graphql/operations/mutation/user';
+import { ACTIVE_USER, BLOCK_USER, MODIFY_USER, REGISTER_USER } from '@graphql/operations/mutation/user';
 import { IRegisterForm } from '@shop/core/Interfaces/register';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -41,5 +42,18 @@ export class UsersService extends ApiService {
       return this.set(BLOCK_USER,{id}, {}).pipe(map( (result: any) => {
           return result.blockUser;
         }));
+    }
+
+    active(token: string, birthday: string, password: string) {
+
+    const user = JSON.parse(atob(token.split('.')[1])).user; // accedemos a la información del token
+
+      return this.set(
+        ACTIVE_USER, 
+        {id: user.id ,birthday, password,include: false},
+         {headers: new HttpHeaders({ Authorization: token}) // Hay qu enviarselo al back
+         }).pipe(map( (result: any) => {
+        return result.activeUserAction;
+      }))
     }
 }
