@@ -7,6 +7,7 @@ import { HeaderComponent } from '@shop-core/component/header/header.component';
 import { NavbarComponent } from '@shop-core/component/navbar/navbar.component';
 import { FooterComponent } from '@shop/core/component/footer/footer.component';
 import { SidebarComponent } from '@shop/core/component/sidebar/sidebar.component';
+import { ChangePasswordComponent } from './forms/change-password/change-password.component';
 
 
 @NgModule({

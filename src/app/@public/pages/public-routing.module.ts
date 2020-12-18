@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PublicComponent } from './public.component';
-import { LoginModule } from './forms/login/login.module';
-import { RegisterModule } from './forms/register/register.module';
-import { ActiveModule } from './forms/active/active.module';
+
 
 const routes: Routes = [
   {
@@ -29,6 +27,14 @@ const routes: Routes = [
       {
         path: 'active/:token',
         loadChildren: () => import('./forms/active/active.module').then(m => m.ActiveModule)
+      },
+      {
+        path: 'forgot',
+        loadChildren: () => import('./forms/forgot/forgot.module').then(m => m.ForgotModule)
+      },
+      {
+        path: 'reset/:token',
+        loadChildren: () => import('./forms/change-password/change-password.module').then(m => m.ChangePasswordModule)
       },
     ]
   }
