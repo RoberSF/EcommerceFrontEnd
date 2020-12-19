@@ -25,8 +25,8 @@ export const LOGIN_QUERY = gql`
 
 //Sería ponerlo igual que lo haríamos en apollo server
 export const USERS_LIST_QUERY = gql`
-    query usersList ($include: Boolean!, $page: Int, $itemsPerPage: Int){
-        users(page: $page, itemsPerPage: $itemsPerPage) {
+    query usersList ($include: Boolean!, $page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum){
+        users(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
             info {
                 ...ResultInfoObject
             }

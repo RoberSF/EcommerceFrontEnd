@@ -40,15 +40,31 @@ mutation blockUser($id: ID!) {
   }
   `;
 
+export const UNBLOCK_USER = gql`
+mutation unBlockUser($id: ID!) {
+  unBlockUser(id: $id) {
+      status
+      message
+    }
+  }
+  `;
+
   export const ACTIVE_USER = gql`
     mutation activeUserAction($id: ID!, $birthday: String!, $password: String!) {
-    activeUserAction(id: $id, birthday: $birthday, password: $password) {
-    status
-    message
-   }
+      activeUserAction(id: $id, birthday: $birthday, password: $password) {
+        status
+        message
+     }
   }`
 
 
+  export const ACTIVE_USER_EMAIL = gql`
+    mutation activeUserEmail($id: ID!, $email: String!) {
+      activeUserEmail(id: $id, email: $email) {
+        status
+        message
+    }
+  }`
 
 
 

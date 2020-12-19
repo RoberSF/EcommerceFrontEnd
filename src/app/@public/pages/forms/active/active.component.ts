@@ -57,6 +57,7 @@ export class ActiveComponent implements OnInit {
         }
         basicAlert(TYPE_ALERT.WARNING, result.message)
         this.router.navigate(['/login']); //el nombre del path
+        return
       }
     );
   

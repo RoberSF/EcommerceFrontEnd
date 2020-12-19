@@ -24,7 +24,9 @@ export class TablePaginationComponent implements OnInit {
 @Input() itemsPerPage = 20;
 @Input() include = true;
 @Input() resultData: IResultData;
-@Input() tableColumns: Array<ITableColumns> = undefined
+@Input() tableColumns: Array<ITableColumns> = undefined;
+// ACTIVE, INACTIVE, ALL
+@Input() filterActiveValue = 'ACTIVE' // Por defecto va a ser ACTIVE y por html-ngModel le asigno el valor que yo quiera
 
 //**************************************************************************************************
 //                                     Salida de data                                                           
@@ -38,6 +40,9 @@ export class TablePaginationComponent implements OnInit {
 
 infoPage: IInfoPage;
 data$: Observable<any>;
+
+
+
 
 
   constructor(private paginationService: TablePaginationService) { }
@@ -70,7 +75,8 @@ data$: Observable<any>;
     const variables = {
       page: this.infoPage.page,
       itemsPerPage: this.itemsPerPage,
-      include: this.include
+      include: this.include,
+      active: this.filterActiveValue
     }
     this.data$ = this.paginationService.getCollectionData(this.query, variables, {}).pipe(map(
       (result:any) => {

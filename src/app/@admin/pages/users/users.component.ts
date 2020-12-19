@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
   resultData: IResultData;
   include: boolean;
   columns: Array<ITableColumns>
+  filterActiveValue = 'ACTIVE'
 
   constructor(private genreService: GenresService, private userService: UsersService) { }
 
@@ -62,6 +63,10 @@ export class UsersComponent implements OnInit {
       {
         property: 'role',
         label: 'Role'
+      },
+      {
+        property: 'active',
+        label: '¿Activo?'
       },
     ]
   };
@@ -108,18 +113,28 @@ export class UsersComponent implements OnInit {
           'Detalles',
           `${user.name} ${user.lastname}<br/>
           <i class="fas fa-envelope-open-text"></i>&nbsp;&nbsp;${user.email}`,
-          375,
+          // Ejemplo de if resumidos
+          (user.active !== false) ? 375 : 400,
           '<i class="fas fa-edit"></i> Editar', // true
-          '<i class="fas fa-lock"></i> Bloquear'
+          (user.active !== false) ? '<i class="fas fa-lock"></i> Bloquear' : '<i class="fas fa-lock-open"></i> Desbloquear'
+          
         ); // false
         if (result) {
           this.updateForm(html, user);
         } else if (result === false) {
-          this.blockForm(user);
+          if(user.active == true) {
+            this.blockForm(user);
+          } else {
+            this.unBlockForm(user);
+          }
+          
         }
         break;
       case 'block':
         this.blockForm(user);
+        break;
+      case 'unblock':
+        this.unBlockForm(user);
         break;
       default:
         break;
@@ -145,6 +160,13 @@ private addUser(result) {
     this.userService.register(user).subscribe((res: any) => {
       if (res.status) {
         basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        // Mandamos email para que se active
+        this.userService.senEmailActive(res.user.id, user.email).subscribe(
+          resultMail => {
+            console.log('Email enviado');
+            (resultMail.status) ? basicAlert(TYPE_ALERT.SUCCESS, resultMail.message) :  basicAlert(TYPE_ALERT.WARNING, resultMail.message);
+          }
+        )
         return;
       }
         basicAlert(TYPE_ALERT.WARNING, res.message);
@@ -176,8 +198,8 @@ private addUser(result) {
   }
 
 
-    //**************************************************************************************************
-  //              Método para bloquear un género                                                           
+  //**************************************************************************************************
+  //              Método para bloquear/desbloquear un usuario                                                           
   //**************************************************************************************************
   
 
@@ -191,17 +213,53 @@ private addUser(result) {
     });
   }
 
+  private unBlockUser(id: string) {
+    this.userService.unBlock(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
   private async blockForm(user: any) {
-    const result = await optionsWithDetails(
-      '¿Bloquear?',
-      `Si bloqueas el item seleccionado, no se mostrará en la lista`,
-      430,
-      'No, no bloquear',
-      'Si, bloquear'
-    );
-    if (result === false) {
-      // Si resultado falso, queremos bloquear
+
+
+    const result =
+
+      await optionsWithDetails(
+        '¿Bloquear?',
+        `Si bloqueas el item seleccionado, no se mostrará en la lista`,
+        430,
+        'No, no bloquear',
+        'Si, bloquear'
+      )
+
+    if(result == false) {
       this.blockUser(user.id);
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
+    }
+  }
+
+  private async unBlockForm(user: any) {
+
+
+    const result =
+
+      await optionsWithDetails(
+        '¿Desloquear?',
+        `Si desbloqueas el item seleccionado, se mostrará en la lista y podrás hacer compras`,
+        500,
+        'No, no desbloquear',
+        'Si, desbloquear'
+      ) 
+
+    if(result == false) {
+      this.unBlockUser(user.id);
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
     }
   }
 

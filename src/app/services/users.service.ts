@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators'
 import { ACTIVE_USER, BLOCK_USER, MODIFY_USER, REGISTER_USER } from '@graphql/operations/mutation/user';
 import { IRegisterForm } from '@shop/core/Interfaces/register';
 import { HttpHeaders } from '@angular/common/http';
+import { UNBLOCK_USER, ACTIVE_USER_EMAIL } from '../@graphql/operations/mutation/user';
 
 
 @Injectable({
@@ -44,6 +45,12 @@ export class UsersService extends ApiService {
         }));
     }
 
+    unBlock(id: string) {
+      return this.set(UNBLOCK_USER,{id}, {}).pipe(map( (result: any) => {
+          return result.unBlockUser;
+        }));
+    }
+
     active(token: string, birthday: string, password: string) {
 
     const user = JSON.parse(atob(token.split('.')[1])).user; // accedemos a la información del token
@@ -55,5 +62,11 @@ export class UsersService extends ApiService {
          }).pipe(map( (result: any) => {
         return result.activeUserAction;
       }))
+    }
+
+    senEmailActive( id: string, email: string) {
+      return this.set(ACTIVE_USER_EMAIL,{id, email}, {}).pipe(map( (result: any) => {
+        return result.activeUserEmail;
+      }));
     }
 }
