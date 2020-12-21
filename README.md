@@ -37,3 +37,6 @@ como las tablas de users o genres enviando los datos entre componentes padres e 
 ## @shared
 
 Table-pagination se comparte para ver las diferentes tablas. Enviamos los datos desde el módulo al componente compartido.
+
+## @Data
+Almacenamos archivos json para utlizar en la portada de nuestro eccomerce. Librería externa instalada y documentado para ahorrar tiempo
