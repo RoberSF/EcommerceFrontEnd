@@ -9,6 +9,7 @@
       "@admin-core/*": ["src/app/@admin/core/*"],
       "@shop-core/*": ["src/app/@public/core/*"],
       "@graphql/*": ["src/app/@graphql/*"],
+      "@data/*": ["src/assets/@data/*"],
 
     },
     "outDir": "./dist/out-tsc",
@@ -23,7 +24,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+    
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
