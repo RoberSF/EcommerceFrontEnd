@@ -6,6 +6,8 @@ import { UsersService } from '../../../services/users.service';
 import caroulselItems from '@data/carousel.json';
 import productList from '@data/products.json';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
+import { ProductService } from '../../../services/product.service';
+import { ACTIVE_FILTERS } from 'src/app/@shared/constants/filter';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,8 @@ export class HomeComponent implements OnInit {
   listTwo;
   listThree;
 
-  constructor(private apiService: ApiService, private auth: AuthService, private userService: UsersService) { }
+  constructor(private apiService: ApiService, private auth: AuthService, 
+                private userService: UsersService, private productService:ProductService) { }
 
   ngOnInit(): void {
 
@@ -30,6 +33,14 @@ export class HomeComponent implements OnInit {
     this.listOne = this.fakeRandomProductList();
     this.listTwo = this.fakeRandomProductList();
     this.listThree = this.fakeRandomProductList();
+    this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40).subscribe((data) => {
+      console.log('Last Offers');
+      console.log(data);
+    })
+    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, true, '4').subscribe((data) => {
+      console.log('Products by platforms');
+      console.log(data);
+    })
 
     //Obtenemos la data del servicio
     // this.auth.login('test1@gmail.com', '123').subscribe((data) => {
