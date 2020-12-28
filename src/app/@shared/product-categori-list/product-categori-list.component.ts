@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
+import productList from '@data/products.json';
 
 @Component({
   selector: 'app-product-categori-list',
