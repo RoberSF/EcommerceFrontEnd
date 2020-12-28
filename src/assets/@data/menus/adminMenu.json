@@ -1,0 +1,21 @@
+[{
+        "url": "/admin",
+        "label": "Dashboard",
+        "icon": "fas fa-columns"
+    },
+    {
+        "url": "/admin/users",
+        "label": "Usuarios",
+        "icon": "fas fa-id-card"
+    },
+    {
+        "url": "/admin/tags",
+        "label": "Tags(etiquetas)-noWorks",
+        "icon": "fas fa-atlas"
+    },
+    {
+        "url": "/admin/genres",
+        "label": "Géneros",
+        "icon": "fas fa-atlas"
+    }
+]
