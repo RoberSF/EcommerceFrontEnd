@@ -28,18 +28,31 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     // Traer los valores cargados en el carousel.json u otros  }
-    this.items = caroulselItems;
+    this.productService.getByLastUnitsOffers(1, 3, ACTIVE_FILTERS.ACTIVE, true, -1, 40).subscribe ( (result: IProduct[]) => {
+      console.log(result);
+      result.map( (item: IProduct) => {
+        this.items.push({
+          id: item.id,
+          title: item.name,
+          description: item.description,
+          background: item.img,
+          url: ''
+        })
+      })
+      console.log(this.items);
+    });
+
+
     this.productList = productList;
     this.listOne = this.fakeRandomProductList();
     this.listTwo = this.fakeRandomProductList();
     this.listThree = this.fakeRandomProductList();
+
     this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40).subscribe((data) => {
-      console.log('Last Offers');
-      console.log(data);
+      this.listTwo = data
     })
-    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, true, '4').subscribe((data) => {
-      console.log('Products by platforms');
-      console.log(data);
+    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, '4' ,true ).subscribe((data) => {
+      this.listOne = data
     })
 
     //Obtenemos la data del servicio
@@ -56,6 +69,9 @@ export class HomeComponent implements OnInit {
       // console.log(data);
     })
   }
+
+
+  
 
   fakeRandomProductList() {
     const list = [];
