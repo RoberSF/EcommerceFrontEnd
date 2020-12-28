@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
       },
       {
+        path: 'games/:tipe/:filter',
+        loadChildren: () => import('./games/games.module').then(m => m.GamesModule)
+      },
+      {
         path: 'login',
         loadChildren: () => import('./forms/login/login.module').then(m => m.LoginModule)
       },
