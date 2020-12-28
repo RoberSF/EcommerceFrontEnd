@@ -15,6 +15,7 @@ fragment ProductObject on Product {
             id
             name
             slug
+            img
             rating{
               value
               count
