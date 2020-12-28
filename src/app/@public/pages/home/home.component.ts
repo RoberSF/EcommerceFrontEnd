@@ -27,10 +27,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Traer los valores cargados en el carousel.json u otros  }
-    this.productService.getByLastUnitsOffers(1, 3, ACTIVE_FILTERS.ACTIVE, true, -1, 40).subscribe ( (result: IProduct[]) => {
-      console.log(result);
-      result.map( (item: IProduct) => {
+    // Traer los valores cargados en el carousel.json u otros 
+    this.productService.getByLastUnitsOffers(1, 3, ACTIVE_FILTERS.ACTIVE, true, -1, 40).subscribe ( (data) => {
+      data.result.map( (item: IProduct) => {
         this.items.push({
           id: item.id,
           title: item.name,
@@ -39,7 +38,7 @@ export class HomeComponent implements OnInit {
           url: ''
         })
       })
-      console.log(this.items);
+      // console.log(this.items);
     });
 
 
@@ -49,10 +48,10 @@ export class HomeComponent implements OnInit {
     this.listThree = this.fakeRandomProductList();
 
     this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40).subscribe((data) => {
-      this.listTwo = data
+      this.listTwo = data.result
     })
     this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, '4' ,true ).subscribe((data) => {
-      this.listOne = data
+      this.listOne = data.result
     })
 
     //Obtenemos la data del servicio
