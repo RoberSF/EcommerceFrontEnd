@@ -1,1 +1,29 @@
-<p>games works!</p>
+<div class="container">
+
+    <app-product-categori-list [title]="'Juegos PlayStation 4'" [productList]="productList"></app-product-categori-list>
+</div>
+
+<!-- <div class="d-flex justify-content-between p-2 float-right">
+    <select class="custom-select float-right" style="width: auto;" [(ngModel)]="filterActiveValue" (ngModelChange)="loadData()">
+        <option [ngValue]="'ALL'">Todos</option>
+        <option [ngValue]="'ACTIVE'">Activos</option>
+        <option [ngValue]="'INACTIVE'">Inactivos</option>
+    </select>&nbsp;&nbsp;
+    <button (click)="manageAction('add', '')" class="btn btn-success float-right mr-3 mb-2">
+      <i class="fas fa-plus-circle"></i> &nbsp; Añadir
+    </button>
+
+</div> -->
+
+
+
+<div class="d-flex justify-content-between p-2">
+    <ngb-pagination [collectionSize]="infoPage.total" [(page)]="infoPage.page" (pageChange)="loadData()" [pageSize]="infoPage.itemsPerPage" [maxSize]="15">
+    </ngb-pagination>
+    <select class="custom-select" style="width: auto;" [(ngModel)]="infoPage.itemsPerPage" (ngModelChange)="loadData()">
+        <option [ngValue]="5">5 items per page</option>
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="15">15 items per page</option>
+        <option [ngValue]="20">20 items per page</option>
+        </select>
+</div>
