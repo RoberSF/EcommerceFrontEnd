@@ -4,8 +4,8 @@ import { LOGIN_QUERY,ME_DATA_QUERY } from '@graphql/operations/query/user';
 import { Apollo } from 'apollo-angular';
 import {map} from 'rxjs/operators'
 import { HttpHeaders } from '@angular/common/http';
-import { ISession } from '../@public/core/Interfaces/session';
-import { IMeData } from '@shop/core/Interfaces/session';
+import { ISession } from '../@public/core/Interfaces/ISession';
+import { IMeData } from '@shop/core/Interfaces/ISession';
 import { Subject } from 'rxjs';
 
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IMeData } from '@shop/core/Interfaces/session';
+import { IMeData } from '@shop/core/Interfaces/ISession';
 import { AuthService } from 'src/app/services/auth.service';
 import shopMenuItems from '@data/menus/shopNavbar.json';
-import { IMenuItem } from '@shop/core/Interfaces/menuItemNavbar';
+import { IMenuItem } from '@shop/core/Interfaces/IMenuItemNavbar';
 
 @Component({
   selector: 'app-navbar',

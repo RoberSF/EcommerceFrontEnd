@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DocumentNode } from 'graphql';
 import { TablePaginationService } from './table-pagination.service';
 import { USERS_LIST_QUERY } from '../../@graphql/operations/query/user';
-import { IResultData, IInfoPage } from '../../@public/core/Interfaces/result-data-interface';
+import { IResultData, IInfoPage } from '../../@public/core/Interfaces/IResultData';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
-import { ITableColumns } from '@shop/core/Interfaces/table-columns.iterface';
+import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 
 @Component({
   selector: 'app-table-pagination',

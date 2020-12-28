@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentNode } from 'graphql';
-import { IResultData } from '../../../@public/core/Interfaces/result-data-interface';
+import { IResultData } from '../../../@public/core/Interfaces/IResultData';
 import { USERS_LIST_QUERY } from '../../../@graphql/operations/query/user';
-import { ITableColumns } from '../../../@public/core/Interfaces/table-columns.iterface';
+import { ITableColumns } from '../../../@public/core/Interfaces/ITableColumns';
 import {  formBasicDialog, optionsWithDetails, userFormBasicDialog } from 'src/app/@shared/alerts/alerts';
 import { GenresService } from 'src/app/services/genres.service';
 import { UsersService } from '../../../services/users.service';
-import { IRegisterForm } from '../../../@public/core/Interfaces/register';
+import { IRegisterForm } from '../../../@public/core/Interfaces/IRegister';
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 

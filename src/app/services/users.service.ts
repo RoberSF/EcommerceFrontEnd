@@ -4,7 +4,7 @@ import { ApiService } from '../@graphql/services/api.service';
 import { USERS_LIST_QUERY } from '@graphql/operations/query/user';
 import {map} from 'rxjs/operators'
 import { ACTIVE_USER, BLOCK_USER, MODIFY_USER, REGISTER_USER } from '@graphql/operations/mutation/user';
-import { IRegisterForm } from '@shop/core/Interfaces/register';
+import { IRegisterForm } from '@shop/core/Interfaces/IRegister';
 import { HttpHeaders } from '@angular/common/http';
 import { UNBLOCK_USER, ACTIVE_USER_EMAIL } from '../@graphql/operations/mutation/user';
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ILogin } from '@shop/core/Interfaces/loginForm';
+import { ILogin } from '@shop/core/Interfaces/IloginForm';
 import { AuthService } from '../../../../services/auth.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IResultLogin } from '../../../core/Interfaces/loginForm';
+import { IResultLogin } from '../../../core/Interfaces/IloginForm';
 import Swal from 'sweetalert2'
-import { IMeData } from '@shop/core/Interfaces/session';
+import { IMeData } from '@shop/core/Interfaces/ISession';
 
 declare function init_plugins();//de esta manera podemos llamar a cualquier script que esté fuera de angular y ponerlo
 //en cualquier archivo de JSJ,TS

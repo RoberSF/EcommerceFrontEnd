@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { IMeData } from '../../Interfaces/session';
+import { IMeData } from '../../Interfaces/ISession';
 
 @Component({
   selector: 'app-header',

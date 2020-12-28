@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { GENRE_LIST_QUERY } from '@graphql/operations/query/genre';
-import { ITableColumns } from '@shop/core/Interfaces/table-columns.iterface';
+import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
 import { formBasicDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { GenresService } from 'src/app/services/genres.service';
-import { IResultData } from '../../../@public/core/Interfaces/result-data-interface';
+import { IResultData } from '../../../@public/core/Interfaces/IResultData';
 import { basicAlert } from '../../../@shared/alerts/toasts';
 
 @Component({

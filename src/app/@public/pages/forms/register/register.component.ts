@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IRegisterForm } from '@shop/core/Interfaces/register';
+import { IRegisterForm } from '@shop/core/Interfaces/IRegister';
 import { Router } from '@angular/router';
 import { UsersService } from '../../../../services/users.service';
 import Swal from 'sweetalert2';
-import { IResultRegister } from '../../../core/Interfaces/register';
+import { IResultRegister } from '../../../core/Interfaces/IRegister';
 
 @Component({
   selector: 'app-register',
