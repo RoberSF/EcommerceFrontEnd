@@ -16,21 +16,28 @@ export class ProductService extends ApiService {
 }
 
 getByPlatform(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, 
-                platform: string, random: Boolean = false) {
+                platform: string, random: Boolean = false, showInfo: boolean = false) {
                 
-    return this.get(PRODUCT_BY_PLATFORM_QUERY,{page, itemsPage, active, platform,random }).pipe(map( (result: any) => {
-        const productList =  result.productsPlatformsRandom.products
-        return this.manageInfo(productList)
+    return this.get(PRODUCT_BY_PLATFORM_QUERY,{page, itemsPage, active, platform,random, showInfo }).pipe(map( (result: any) => {
+        const data =  result.productsPlatformsRandom
+        return {
+          info: data.info,
+          result: this.manageInfo(data.products)
+        }
+        
       }));
 }
 
 
 getByLastUnitsOffers(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, 
-                        random: Boolean = false, topPrice: number = -1, lastUnits: number = -1) {
+                        random: Boolean = false, topPrice: number = -1, lastUnits: number = -1, showInfo: boolean = false) {
 
-    return this.get(PRODUCT_LAST_UNITS_OFFERS_QUERY,{page, itemsPage, active, random, topPrice, lastUnits}).pipe(map( (result: any) => {
-        const productList =  result.productsOffersLast.products
-        return this.manageInfo(productList)
+    return this.get(PRODUCT_LAST_UNITS_OFFERS_QUERY,{page, itemsPage, active, random, topPrice, lastUnits, showInfo}).pipe(map( (result: any) => {
+      const data =  result.productsOffersLast;
+        return {
+          info: data.info,
+          result: this.manageInfo(data.products)
+        } 
       }));
 }
 
@@ -54,7 +61,7 @@ private manageInfo(listProducts) {
             }
           )
         })
-        console.log(resultList);
+        // console.log(resultList);
         return resultList;
 }
 
