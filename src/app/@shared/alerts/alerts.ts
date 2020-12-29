@@ -119,3 +119,23 @@ export async function formBasicDialog(
       }
     });
   }
+
+
+  //**************************************************************************************************
+  //                      Loading( no se cierra automaticamente, tengo que decírselo)                                                       
+  //**************************************************************************************************
+  
+
+  export const loadData = (title: string, html: string) => {
+    Swal.fire({
+      title,
+      html,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  export const closeAlert = () => {
+    Swal.close();
+  };

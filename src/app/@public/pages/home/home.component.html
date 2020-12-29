@@ -1,11 +1,13 @@
-<shop-carousel-items [items]="items"></shop-carousel-items>
+<div class="container-fluid" *ngIf="!loading">
+    <shop-carousel-items [items]="items"></shop-carousel-items>
 
-<app-product-categori-list *ngIf="listOne" [title]="'Juegos por plataforma PC'" [productList]="listOne">
-</app-product-categori-list>
+    <app-product-categori-list *ngIf="listOne" [title]="'Juegos por plataforma PC'" [productList]="listOne">
+    </app-product-categori-list>
 
 
-<app-product-categori-list *ngIf="listTwo" [title]="'Juegos más económicos (<40 €)'" [productList]="listTwo">
-</app-product-categori-list>
+    <app-product-categori-list *ngIf="listTwo" [title]="'Juegos más económicos (<40 €)'" [productList]="listTwo">
+    </app-product-categori-list>
 
-<app-product-categori-list *ngIf="listThree" [title]="'Juegos de PC'" [productList]="listThree">
-</app-product-categori-list>
+    <app-product-categori-list *ngIf="listThree" [title]="'Juegos de PC'" [productList]="listThree">
+    </app-product-categori-list>
+</div>

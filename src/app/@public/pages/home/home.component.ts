@@ -3,11 +3,8 @@ import { ApiService } from '@graphql/services/api.service';
 import { ICarouselItem } from '@mugan86/ng-shop-ui/lib/interfaces/carousel-item.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsersService } from '../../../services/users.service';
-import caroulselItems from '@data/carousel.json';
-import productList from '@data/products.json';
-import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { ProductService } from '../../../services/product.service';
-import { ACTIVE_FILTERS } from 'src/app/@shared/constants/filter';
+import { loadData, closeAlert } from 'src/app/@shared/alerts/alerts';
 
 @Component({
   selector: 'app-home',
@@ -21,18 +18,22 @@ export class HomeComponent implements OnInit {
   listOne;
   listTwo;
   listThree;
+  loading: boolean;
 
   constructor(private apiService: ApiService, private auth: AuthService, 
                 private userService: UsersService, private productService:ProductService) { }
 
   ngOnInit(): void {
-
+    
+    this.loading = true;
+    loadData('Loading', 'Allá vamos!!');
     this.productService.getHomePage().subscribe( (data: any) => {
-      console.log(data);
       this.listOne = data.ps4
       this.listTwo = data.topPrice
       this.listThree = data.pc
       this.items = this.manageCarousel(data.carousel.products)
+      closeAlert();
+      this.loading = false;
     })
 
 

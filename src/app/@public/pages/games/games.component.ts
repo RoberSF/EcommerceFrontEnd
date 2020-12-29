@@ -7,6 +7,7 @@ import { GAMES_PAGES_INFO } from 'src/app/@shared/constants/game.constants';
 import { ProductService } from '../../../services/product.service';
 import { IInfoPage } from '../../core/Interfaces/IResultData';
 import { TYPE_OPERATION } from '../../../@shared/constants/game.constants';
+import { closeAlert, loadData } from 'src/app/@shared/alerts/alerts';
 
 @Component({
   selector: 'app-games',
@@ -26,15 +27,19 @@ export class GamesComponent implements OnInit {
   }
   gamesPageInfo: IGamePageInfo;
   typeData: TYPE_OPERATION;
+  loading: boolean;
 
   constructor(private productService: ProductService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
+      this.loading = true;
+      loadData('Loading', 'Allá vamos!!');
       this.typeData = params.type;
       this.selectPage = 1; // Cada vez que se cargue la página empezamos a contar desde la pag 1
       this.gamesPageInfo = GAMES_PAGES_INFO[`${params.type}/${params.filter}`]
       this.loadData() //cada vez que cambiemos de página haremos un "refresh" de la data
+      this.loading = false;
     })
   }
   
@@ -54,7 +59,9 @@ export class GamesComponent implements OnInit {
 
   private asingResult(data) {
     this.productList = data.result;
-    this.infoPage = data.info
+    this.infoPage = data.info;
+    closeAlert();
+    this.loading = false;
   }
 
 
