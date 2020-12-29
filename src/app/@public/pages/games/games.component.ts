@@ -40,13 +40,22 @@ export class GamesComponent implements OnInit {
   
   loadData() {
     if( this.typeData === TYPE_OPERATION.PLATFORMS) {
-
       this.productService.getByPlatform(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.gamesPageInfo.platformsIds ,false, true, true).subscribe((data) => {
-        this.productList = data.result;
-        this.infoPage = data.info
+        this.asingResult(data)
+        return
       })
     }
+    this.productService.getByLastUnitsOffers(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, false, this.gamesPageInfo.topPrice, this.gamesPageInfo.stock, true, true).subscribe((data) => {
+      this.asingResult(data)
+      return
+    })
   };
+
+
+  private asingResult(data) {
+    this.productList = data.result;
+    this.infoPage = data.info
+  }
 
 
 }
