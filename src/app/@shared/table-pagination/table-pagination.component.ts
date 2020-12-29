@@ -6,6 +6,7 @@ import { IResultData, IInfoPage } from '../../@public/core/Interfaces/IResultDat
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
+import { closeAlert, loadData } from 'src/app/@shared/alerts/alerts';
 
 @Component({
   selector: 'app-table-pagination',
@@ -40,6 +41,7 @@ export class TablePaginationComponent implements OnInit {
 
 infoPage: IInfoPage;
 data$: Observable<any>;
+loading:boolean;
 
 
 
@@ -71,7 +73,9 @@ data$: Observable<any>;
   //**************************************************************************************************
   
   loadData() {
-
+    
+    this.loading = true;
+    loadData('Cargando los datos', 'Casi estamos')
     const variables = {
       page: this.infoPage.page,
       itemsPerPage: this.itemsPerPage,
@@ -83,6 +87,8 @@ data$: Observable<any>;
         const data = result[this.resultData.definitionKey];
         this.infoPage.pages = data.info.pages;
         this.infoPage.total = data.info.total;
+        this.loading = false;
+        closeAlert();
         return data[this.resultData.listKey];
       })
     )
