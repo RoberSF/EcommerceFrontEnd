@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PublicComponent } from './public.component';
+import { DetailsModule } from './games/details/details.module';
 
 
 const routes: Routes = [
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: 'contact',
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
+      },
+      {
+        path: 'games/details/:id',
+        loadChildren: () => import('./games/details/details.module').then(m => m.DetailsModule)
       },
       {
         path: 'games/:type/:filter',

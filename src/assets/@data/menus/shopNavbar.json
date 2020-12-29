@@ -4,10 +4,16 @@
         "icon": ""
     },
     {
+        "url": "/games/details/123",
+        "label": "Details",
+        "icon": ""
+    },
+    {
         "url": "/games/platforms/sony",
         "label": "Juegos PlayStation",
         "icon": ""
     },
+
     {
         "url": "/games/platforms/microsoft",
         "label": "Juegos Microsoft",
