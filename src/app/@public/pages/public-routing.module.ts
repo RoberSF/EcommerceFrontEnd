@@ -17,7 +17,7 @@ const routes: Routes = [
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
       },
       {
-        path: 'games/:tipe/:filter',
+        path: 'games/:type/:filter',
         loadChildren: () => import('./games/games.module').then(m => m.GamesModule)
       },
       {
