@@ -11,6 +11,7 @@ export class ProductCategoriListComponent implements OnInit {
 
   @Input() title = 'Título de la categoría';
   @Input() productList: Array<IProduct> = [];
+  @Input() description = ''
 
   constructor() { }
 
