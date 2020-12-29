@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { PRODUCT_LAST_UNITS_OFFERS_QUERY, PRODUCT_BY_PLATFORM_QUERY } from '@graphql/operations/query/product';
 import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
+import { HOME_PAGE } from '@graphql/operations/query/homePage';
 
 @Injectable({
   providedIn: 'root'
@@ -39,12 +40,22 @@ getByLastUnitsOffers(page: number = 1, itemsPage: number = 10, active: ACTIVE_FI
       }));
 }
 
+getHomePage() {
+  return this.get(HOME_PAGE, {showPlatform: true}).pipe(map( (result:any) => {
+      return {
+        carousel: result.carousel,
+        ps4: this.manageInfo(result.ps4.products, false),
+        pc: this.manageInfo(result.pc.products, false),
+        topPrice: this.manageInfo(result.topPrice35.products, true)
+      };
+  }))
+}
 
 
-private manageInfo(listProducts) {
+
+private manageInfo(listProducts, showDescription = false) {
         const resultList: Array<IProduct> = [];
         listProducts.map( (productObject) => {
-          // console.log(productObject)
           resultList.push(
             {
             // Tener en cuenta la interfaceIProduct
@@ -53,14 +64,13 @@ private manageInfo(listProducts) {
             img: productObject.product.img,
             stock: productObject.stock,
             price: productObject.price,
-            description: (productObject.platform) ? productObject.platform.name : '',
+            description: (productObject.platform && showDescription) ? productObject.platform.name : '',
             qty: 1,
             rating: productObject.product.rating,
             
             }
           )
         })
-        // console.log(resultList);
         return resultList;
 }
 

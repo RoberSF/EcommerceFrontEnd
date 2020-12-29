@@ -27,32 +27,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Traer los valores cargados en el carousel.json u otros 
-    this.productService.getByLastUnitsOffers(1, 3, ACTIVE_FILTERS.ACTIVE, true, -1, 40).subscribe ( (data) => {
-      data.result.map( (item: IProduct) => {
-        this.items.push({
-          id: item.id,
-          title: item.name,
-          description: item.description,
-          background: item.img,
-          url: ''
-        })
-      })
-      // console.log(this.items);
-    });
-
-
-    this.productList = productList;
-    this.listOne = this.fakeRandomProductList();
-    this.listTwo = this.fakeRandomProductList();
-    this.listThree = this.fakeRandomProductList();
-
-    this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40, -1, false, true).subscribe((data) => {
-      this.listTwo = data.result
+    this.productService.getHomePage().subscribe( (data: any) => {
+      console.log(data);
+      this.listOne = data.ps4
+      this.listTwo = data.topPrice
+      this.listThree = data.pc
+      this.items = this.manageCarousel(data.carousel.products)
     })
-    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, ['4'] ,true, true ).subscribe((data) => {
-      this.listOne = data.result
-    })
+
 
     //Obtenemos la data del servicio
     // this.auth.login('test1@gmail.com', '123').subscribe((data) => {
@@ -70,7 +52,19 @@ export class HomeComponent implements OnInit {
   }
 
 
-  
+  private manageCarousel(list) {
+    const itemsValues: Array<ICarouselItem> = [];
+    list.map( (item) => {
+          itemsValues.push({
+            id: item.id,
+            title: item.product.name,
+            description: item.platform.name,
+            background: item.product.img,
+            url: ''
+          })
+        })
+      return itemsValues
+      }
 
   fakeRandomProductList() {
     const list = [];
@@ -83,3 +77,34 @@ export class HomeComponent implements OnInit {
   }
 
 }
+
+
+
+
+
+
+
+
+
+//**************************************************************************************************
+//                     Queries individuales antes de hacerla en una sola                                                           
+//**************************************************************************************************
+      
+    // Traer los valores cargados en el carousel.json u otros 
+    // this.productService.getByLastUnitsOffers(1, 3, ACTIVE_FILTERS.ACTIVE, true, -1, 40).subscribe ( (data) => {
+    //   data.result.map( (item: IProduct) => {
+    //     this.items.push({
+    //       id: item.id,
+    //       title: item.name,
+    //       description: item.description,
+    //       background: item.img,
+    //       url: ''
+    //     })
+    //   })
+    //   // console.log(this.items);
+    // });
+
+
+    // this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40, -1, false, true).subscribe((data) => {
+    //   this.listTwo = data.result
+    // })
