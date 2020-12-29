@@ -47,10 +47,10 @@ export class HomeComponent implements OnInit {
     this.listTwo = this.fakeRandomProductList();
     this.listThree = this.fakeRandomProductList();
 
-    this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40).subscribe((data) => {
+    this.productService.getByLastUnitsOffers(1,4, ACTIVE_FILTERS.ACTIVE, true, 40, -1, false, true).subscribe((data) => {
       this.listTwo = data.result
     })
-    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, '4' ,true ).subscribe((data) => {
+    this.productService.getByPlatform(1,4, ACTIVE_FILTERS.ACTIVE, ['4'] ,true, true ).subscribe((data) => {
       this.listOne = data.result
     })
 
