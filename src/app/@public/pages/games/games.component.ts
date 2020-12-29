@@ -34,7 +34,7 @@ export class GamesComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
       this.loading = true;
-      loadData('Loading', 'Allá vamos!!');
+      loadData('Loading', `<div class="lds-roller"><div>`);
       this.typeData = params.type;
       this.selectPage = 1; // Cada vez que se cargue la página empezamos a contar desde la pag 1
       this.gamesPageInfo = GAMES_PAGES_INFO[`${params.type}/${params.filter}`]
