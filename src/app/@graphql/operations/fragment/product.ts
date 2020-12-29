@@ -16,21 +16,15 @@ fragment ProductObject on Product {
             name
             slug
             img
-            rating{
-              value
-              count
-          }
+            rating{ value count}
           },
-          platform {
+          platform @include(if: $showPlatform) {
             id
             name
             slug
             active
-          }
-
-         
+          }     
 }
 `
-
 
 
