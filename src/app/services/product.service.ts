@@ -16,9 +16,8 @@ export class ProductService extends ApiService {
 }
 
 getByPlatform(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, 
-                platform: string, random: Boolean = false, showInfo: boolean = false) {
-                
-    return this.get(PRODUCT_BY_PLATFORM_QUERY,{page, itemsPage, active, platform,random, showInfo }).pipe(map( (result: any) => {
+                platform: Array<string>, random: Boolean = false, showInfo: boolean = false, showPlatform: boolean = false) {
+    return this.get(PRODUCT_BY_PLATFORM_QUERY,{page, itemsPage, active, platform ,random, showInfo, showPlatform }).pipe(map( (result: any) => {
         const data =  result.productsPlatformsRandom
         return {
           info: data.info,
@@ -30,9 +29,8 @@ getByPlatform(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS =
 
 
 getByLastUnitsOffers(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, 
-                        random: Boolean = false, topPrice: number = -1, lastUnits: number = -1, showInfo: boolean = false) {
-
-    return this.get(PRODUCT_LAST_UNITS_OFFERS_QUERY,{page, itemsPage, active, random, topPrice, lastUnits, showInfo}).pipe(map( (result: any) => {
+                        random: Boolean = false, topPrice: number = -1, lastUnits: number = -1, showInfo: boolean = false, showPlatform: boolean = false) {
+    return this.get(PRODUCT_LAST_UNITS_OFFERS_QUERY,{page, itemsPage, active, random, topPrice, lastUnits, showInfo, showPlatform}).pipe(map( (result: any) => {
       const data =  result.productsOffersLast;
         return {
           info: data.info,
@@ -46,6 +44,7 @@ getByLastUnitsOffers(page: number = 1, itemsPage: number = 10, active: ACTIVE_FI
 private manageInfo(listProducts) {
         const resultList: Array<IProduct> = [];
         listProducts.map( (productObject) => {
+          // console.log(productObject)
           resultList.push(
             {
             // Tener en cuenta la interfaceIProduct
@@ -54,7 +53,7 @@ private manageInfo(listProducts) {
             img: productObject.product.img,
             stock: productObject.stock,
             price: productObject.price,
-            description: '',
+            description: (productObject.platform) ? productObject.platform.name : '',
             qty: 1,
             rating: productObject.product.rating,
             
