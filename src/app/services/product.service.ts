@@ -53,7 +53,7 @@ getHomePage() {
 
 
 
-private manageInfo(listProducts, showDescription = false) {
+private manageInfo(listProducts, showDescription = true) {
         const resultList: Array<IProduct> = [];
         listProducts.map( (productObject) => {
           resultList.push(
