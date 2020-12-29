@@ -1,6 +1,6 @@
 <div class="container">
 
-    <app-product-categori-list [title]="'Juegos PlayStation 4'" [productList]="productList"></app-product-categori-list>
+    <app-product-categori-list [title]="gamesPageInfo.title" [productList]="productList" [description]="gamesPageInfo.description"></app-product-categori-list>
 </div>
 
 <!-- <div class="d-flex justify-content-between p-2 float-right">
@@ -18,7 +18,7 @@
 
 
 <div class="d-flex justify-content-between p-2">
-    <ngb-pagination [collectionSize]="infoPage.total" [(page)]="infoPage.page" (pageChange)="loadData()" [pageSize]="infoPage.itemsPerPage" [maxSize]="15">
+    <ngb-pagination [collectionSize]="infoPage.total" [(page)]="selectPage" (pageChange)="loadData()" [pageSize]="infoPage.itemsPerPage" [maxSize]="15">
     </ngb-pagination>
     <select class="custom-select" style="width: auto;" [(ngModel)]="infoPage.itemsPerPage" (ngModelChange)="loadData()">
         <option [ngValue]="5">5 items per page</option>
