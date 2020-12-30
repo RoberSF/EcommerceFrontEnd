@@ -58,3 +58,20 @@ export const PRODUCT_DETAILS = gql`
     ${ PRODUCT_FRAGMENT}
     `;
 
+
+  export const PRODUCT_RANDOM = gql`
+    
+    query RandomItems($showPlatform: Boolean = true, $similarAndScreen: Boolean = false) {
+
+          randomItems: productsOffersLast(itemsPerPage: 6, random: true) {
+                status
+                message
+                products {
+                ...ProductObject
+              }
+            }
+          }
+    ${ PRODUCT_FRAGMENT}
+    `;
+
+
