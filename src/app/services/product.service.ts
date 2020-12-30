@@ -6,7 +6,8 @@ import { PRODUCT_LAST_UNITS_OFFERS_QUERY, PRODUCT_BY_PLATFORM_QUERY } from '@gra
 import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
-import { PRODUCT_DETAILS } from '../@graphql/operations/query/product';
+import { PRODUCT_DETAILS, PRODUCT_RANDOM } from '../@graphql/operations/query/product';
+
 
 @Injectable({
   providedIn: 'root'
@@ -56,14 +57,21 @@ getHomePage() {
 getItem(id: number) {
 
   return this.get( PRODUCT_DETAILS, { id: id}, {}, false).pipe(map( (result: any) => {
-    console.log(result.productDetails);
     const data =  result.productDetails;
-    console.log(data.product);
     return {
-      result: this.setInObject(data.product, true)
+      product: this.setInObject(data.product, true),
+      screenshoots: data.product.product.screenshoot, //ojo al doble product que es a causa del fragment
+      similarProducts: data.product.similarProducts
     } 
   }))
 
+}
+
+itemsRandom() {
+  return this.get(PRODUCT_RANDOM).pipe(map((result:any) => {
+    const data = result.randomItems.products;
+    return this.manageInfo(data, true)
+  }))
 }
 
 
