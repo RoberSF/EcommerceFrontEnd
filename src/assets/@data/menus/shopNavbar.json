@@ -4,11 +4,6 @@
         "icon": ""
     },
     {
-        "url": "/games/details/123",
-        "label": "Details",
-        "icon": ""
-    },
-    {
         "url": "/games/platforms/sony",
         "label": "Juegos PlayStation",
         "icon": ""
