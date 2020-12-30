@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import productList from '@data/products.json';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-categori-list',
@@ -13,7 +14,7 @@ export class ProductCategoriListComponent implements OnInit {
   @Input() productList: Array<IProduct> = [];
   @Input() description = ''
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -23,7 +24,7 @@ export class ProductCategoriListComponent implements OnInit {
   }
 
   showProductDetails($event: IProduct) {
-
+    this.router.navigate(['/games/details/', $event.id])
   }
 
 }
