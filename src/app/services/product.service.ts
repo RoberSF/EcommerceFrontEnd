@@ -6,6 +6,7 @@ import { PRODUCT_LAST_UNITS_OFFERS_QUERY, PRODUCT_BY_PLATFORM_QUERY } from '@gra
 import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
+import { PRODUCT_DETAILS } from '../@graphql/operations/query/product';
 
 @Injectable({
   providedIn: 'root'
@@ -52,23 +53,40 @@ getHomePage() {
 }
 
 
+getItem(id: number) {
+
+  return this.get( PRODUCT_DETAILS, { id: id}, {}, false).pipe(map( (result: any) => {
+    console.log(result.productDetails);
+    const data =  result.productDetails;
+    console.log(data.product);
+    return {
+      result: this.setInObject(data.product, true)
+    } 
+  }))
+
+}
+
+
+private setInObject(productObject, showDescription) {
+  return {
+    // Tener en cuenta la interfaceIProduct
+    id: productObject.id,
+    img: productObject.product.img,
+    name: productObject.product.name,
+    rating: productObject.product.rating,
+    description: (productObject.platform && showDescription) ? productObject.platform.name : '',
+    qty: 1,
+    price: productObject.price,
+    stock: productObject.stock
+  };
+}
+
+
 
 private manageInfo(listProducts, showDescription = true) {
         const resultList: Array<IProduct> = [];
         listProducts.map( (productObject) => {
-          resultList.push(
-            {
-            // Tener en cuenta la interfaceIProduct
-            id: productObject.id,
-            name: productObject.product.name,
-            img: productObject.product.img,
-            stock: productObject.stock,
-            price: productObject.price,
-            description: (productObject.platform && showDescription) ? productObject.platform.name : '',
-            qty: 1,
-            rating: productObject.product.rating,
-            
-            }
+          resultList.push( this.setInObject(productObject, showDescription)
           )
         })
         return resultList;

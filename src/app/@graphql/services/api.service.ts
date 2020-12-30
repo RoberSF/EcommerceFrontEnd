@@ -17,12 +17,12 @@ export class ApiService {
   //**************************************************************************************************
 
   // Ponemos protected para que solo se pueda acceder a ella desde el hijo o en la propia clase
-  protected get(query: DocumentNode, variables: object = {}, context: object = {}) {
+  protected get(query: DocumentNode, variables: object = {}, context: object = {}, cache: boolean = true) {
     return this.apollo.watchQuery({
       query,
       variables,
       context,
-      fetchPolicy: 'network-only'
+      fetchPolicy: (cache) ? 'network-only' : 'no-cache'
     }).valueChanges.pipe(map((result) => {
       return result.data
     })

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import products from '@data/products.json';
 import { CURRENCIES_SYMBOL, CURRENCY_LIST } from '@mugan86/ng-shop-ui';
+import { ProductService } from '../../../../services/product.service';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -21,9 +22,10 @@ export class DetailsComponent implements OnInit {
   'https://media.rawg.io/media/screenshots/a5c/a5c95ea539c87d5f538763e16e18fb99.jpg'
     ]
 
-  constructor() { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
+    this.productService.getItem(1).subscribe()
   }
 
   changeValue($event) {

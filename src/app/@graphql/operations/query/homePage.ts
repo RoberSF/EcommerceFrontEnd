@@ -3,7 +3,7 @@ import { PRODUCT_FRAGMENT } from '../fragment/product';
 
 export const HOME_PAGE = gql`
 
-  query HomePageInfo($showPlatform: Boolean = false) {
+  query HomePageInfo($showPlatform: Boolean = false, $similarAndScreen: Boolean = false) {
 
     carousel: productsOffersLast(itemsPerPage: 6, topPrice: 30, random: true) {
         products {

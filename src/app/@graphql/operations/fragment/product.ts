@@ -17,13 +17,21 @@ fragment ProductObject on Product {
             slug
             img
             rating{ value count}
+            screenshoot  @include(if: $similarAndScreen)
           },
           platform @include(if: $showPlatform) {
             id
             name
             slug
             active
-          }     
+          },
+          similarProducts @include(if: $similarAndScreen){ 
+            id
+            platform {
+            id
+            name
+            }  
+          }  
 }
 `
 
