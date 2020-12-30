@@ -34,4 +34,6 @@ export class NavbarComponent implements OnInit {
     this.authService.resetSession();
   }
 
+  openNav() {}
+
 }
