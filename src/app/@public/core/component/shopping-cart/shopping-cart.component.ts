@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../../../../services/shopping-cart.service';
 import { IShoppingCart } from '../../Interfaces/IShoppingCart';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
+import { CURRENCY_SELECTED } from '../../../../@shared/constants/config';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -11,6 +12,7 @@ import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 export class ShoppingCartComponent implements OnInit {
 
   shoopingCart: IShoppingCart;
+  currencySelect = CURRENCY_SELECTED;
 
   constructor(private shoppingCartService: ShoppingCartService) { 
 
@@ -31,7 +33,15 @@ export class ShoppingCartComponent implements OnInit {
   }
   // Para borrar un elemento
   clearItem(product: IProduct){
-    product.qty = 0;
+    this.manageProductUnitInfo(0, product)
+  }
+
+  changeValue(qty: number, product: IProduct) {
+    this.manageProductUnitInfo(qty, product)
+  }
+
+  manageProductUnitInfo(qty: number, product: IProduct) {
+    product.qty = qty;
     this.shoppingCartService.manageProduct(product);
   }
 
