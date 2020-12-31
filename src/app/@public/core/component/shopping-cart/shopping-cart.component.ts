@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from '../../../../services/shopping-cart.service';
 import { IShoppingCart } from '../../Interfaces/IShoppingCart';
+import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -24,9 +25,14 @@ export class ShoppingCartComponent implements OnInit {
   ngOnInit(){
     this.shoopingCart = this.shoppingCartService.initializeCart()
   }
-
+  // Para borrar todos los elementos
   clear() {
     this.shoppingCartService.clear()
+  }
+  // Para borrar un elemento
+  clearItem(product: IProduct){
+    product.qty = 0;
+    this.shoppingCartService.manageProduct(product);
   }
 
   closeNav() {
