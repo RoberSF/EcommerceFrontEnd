@@ -1,0 +1,3 @@
+import { CURRENCIES_SYMBOL, CURRENCY_LIST } from '@mugan86/ng-shop-ui';
+
+export const CURRENCY_SELECTED = CURRENCIES_SYMBOL[CURRENCY_LIST.EURO];
