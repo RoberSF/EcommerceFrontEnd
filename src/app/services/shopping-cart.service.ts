@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { IShoppingCart } from '../@public/core/Interfaces/IShoppingCart';
-import products from '@data/products.json';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,11 @@ export class ShoppingCartService {
     products: this.products
   };
 
+  // Gestión de productos con las notificaciones cuando se hacen modificaciones
+  // Notificamos los cambios con el observable
+  public itemsVar = new Subject<IShoppingCart>();
+  public itemsVar$ = this.itemsVar.asObservable();
+
 
   //**************************************************************************************************
   //       Inicializar el carrito de compra para tener la info giardada                                                           
@@ -28,6 +33,10 @@ export class ShoppingCartService {
       this.shoppingCart = storeData;
     }
     return this.shoppingCart;
+  }
+
+  public updateItemsInShoppingCart(newValue: IShoppingCart){
+    this.itemsVar.next(newValue)
   }
 
   //**************************************************************************************************
@@ -64,7 +73,47 @@ export class ShoppingCartService {
           this.shoppingCart.products.push(product)
         }
       }
-      localStorage.setItem('cart', JSON.stringify(this.shoppingCart))
+      //localStorage.setItem('cart', JSON.stringify(this.shoppingCart))
+      this.checkOutTotal();
+  }
+
+  //**************************************************************************************************
+  //                     Comprobamos la información para hacer el pago                                                           
+  //**************************************************************************************************
+  
+  checkOutTotal() {
+    let subtotal = 0;
+    let total = 0;
+    this.shoppingCart.products.map((product: IProduct) => { //utiizamos el map para poder recorrer el array
+        subtotal += product.qty // subtotal = subtotal + product.qty
+        total += (product.qty * product.price);
+    })
+    this.shoppingCart.total = total;
+    this.shoppingCart.subtotal = subtotal;
+    console.log('calculado',this.shoppingCart);
+    this.setInfo()
+  }
+
+//**************************************************************************************************
+//                                   Vaciar carrito                                                           
+//**************************************************************************************************
+
+  clear() {
+    this.products =  [];
+    this.shoppingCart  = {
+      total: 0,
+      subtotal: 0,
+      products: this.products
+    };
+    this.setInfo();
+    console.log('Carrito vacío');
+    return this.shoppingCart;
+  }
+
+  private setInfo() {
+    console.log('localStorage', this.shoppingCart);
+    localStorage.setItem('cart', JSON.stringify(this.shoppingCart))
+    this.updateItemsInShoppingCart(this.shoppingCart) // notificamos los cambios con el observable
   }
 
   closeNav() {

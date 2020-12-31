@@ -11,14 +11,26 @@ export class ShoppingCartComponent implements OnInit {
 
   shoopingCart: IShoppingCart;
 
-  constructor(private shoppingCart: ShoppingCartService) { }
+  constructor(private shoppingCartService: ShoppingCartService) { 
+
+    // Escuchamos el observable del ShoppingService
+    this.shoppingCartService.itemsVar$.subscribe( (data: IShoppingCart) => {
+      if ( data !== undefined && data !== null) {
+        this.shoopingCart = data;
+      }
+    })
+  }
 
   ngOnInit(){
-    this.shoopingCart = this.shoppingCart.initializeCart()
+    this.shoopingCart = this.shoppingCartService.initializeCart()
+  }
+
+  clear() {
+    this.shoppingCartService.clear()
   }
 
   closeNav() {
-    this.shoppingCart.closeNav()
+    this.shoppingCartService.closeNav()
   }
 
 
