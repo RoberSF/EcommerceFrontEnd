@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import productList from '@data/products.json';
 import { Router } from '@angular/router';
+import { ShoppingCartService } from '../../services/shopping-cart.service';
 
 @Component({
   selector: 'app-product-categori-list',
@@ -14,13 +15,13 @@ export class ProductCategoriListComponent implements OnInit {
   @Input() productList: Array<IProduct> = [];
   @Input() description = ''
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private shoppinCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
   }
 
   addToCart($event: IProduct) {
-
+    this.shoppinCartService.manageProduct($event)
   }
 
   showProductDetails($event: IProduct) {
