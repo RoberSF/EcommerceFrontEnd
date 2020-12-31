@@ -1,4 +1,11 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+    <h5>Mi carrito de la compra</h5>
+    <hr />
+    <!-- {{shoopingCart | json}} -->
+    <div class="card product" *ngIf="shoopingCart.total === 0">
+        No tienes elementos guardados en el carrito de compra. Añádelos desde los productos con la opción de Añadir a la cesta
+    </div>
+    <a (click)="clear()">Borrar</a>
 </div>
 <div id="overlay"></div>
