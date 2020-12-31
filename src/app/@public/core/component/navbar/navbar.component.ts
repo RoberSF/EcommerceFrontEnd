@@ -3,6 +3,7 @@ import { IMeData } from '@shop/core/Interfaces/ISession';
 import { AuthService } from 'src/app/services/auth.service';
 import shopMenuItems from '@data/menus/shopNavbar.json';
 import { IMenuItem } from '@shop/core/Interfaces/IMenuItemNavbar';
+import { ShoppingCartService } from '../../../../services/shopping-cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,7 @@ export class NavbarComponent implements OnInit {
   access = false;
   role: string;
   userLabel = '';
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private shoppingCart: ShoppingCartService) {
     this.authService.accessVar$.subscribe((result) => {
       this.session = result;
       this.access = this.session.status;
@@ -34,6 +35,8 @@ export class NavbarComponent implements OnInit {
     this.authService.resetSession();
   }
 
-  openNav() {}
+  openNav() {
+    this.shoppingCart.openNav()
+  }
 
 }

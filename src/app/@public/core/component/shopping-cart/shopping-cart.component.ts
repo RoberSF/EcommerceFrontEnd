@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ShoppingCartService } from '../../../../services/shopping-cart.service';
+import { IShoppingCart } from '../../Interfaces/IShoppingCart';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -7,21 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor() { }
+  shoopingCart: IShoppingCart;
 
-  ngOnInit(): void {
+  constructor(private shoppingCart: ShoppingCartService) { }
+
+  ngOnInit(){
+    this.shoopingCart = this.shoppingCart.initializeCart()
   }
 
   closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("overlay").style.display = "none";
-    document.getElementById("app-body").style.overflow = "auto";
-  }
-  
-  openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("app-body").style.overflow = "hidden";
+    this.shoppingCart.closeNav()
   }
 
 
