@@ -13,7 +13,8 @@ export class ProductCategoriListComponent implements OnInit {
 
   @Input() title = 'Título de la categoría';
   @Input() productList: Array<IProduct> = [];
-  @Input() description = ''
+  @Input() description = '';
+  @Input() showDesc: boolean;
 
   constructor(private router: Router, private shoppinCartService: ShoppingCartService) { }
 

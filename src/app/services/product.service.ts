@@ -46,8 +46,8 @@ getHomePage() {
   return this.get(HOME_PAGE, {showPlatform: true}).pipe(map( (result:any) => {
       return {
         carousel: result.carousel,
-        ps4: this.manageInfo(result.ps4.products, false),
-        pc: this.manageInfo(result.pc.products, false),
+        ps4: this.manageInfo(result.ps4.products, true),
+        pc: this.manageInfo(result.pc.products, true),
         topPrice: this.manageInfo(result.topPrice35.products, true)
       };
   }))
