@@ -1,3 +1,5 @@
+@import './../../../../../assets/styles/prices.scss';
+
 /* The side navigation menu */
 
 .sidenav {
@@ -76,6 +78,10 @@
 .product {
     margin: 10px;
     padding: 12px
+}
+
+.price {
+    font-size: 17px;
 }
 
 
