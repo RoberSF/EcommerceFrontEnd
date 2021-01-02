@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PublicComponent } from './public.component';
 import { DetailsModule } from './games/details/details.module';
+import { CheckoutModule } from './forms/checkout/checkout.module';
 
 
 const routes: Routes = [
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'contact',
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
+      },
+      {
+        path: 'ckeckout',
+        loadChildren: () => import('./forms/checkout/checkout.module').then(m => m.CheckoutModule)
       },
       {
         path: 'games/details/:id',
