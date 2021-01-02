@@ -21,3 +21,9 @@
 .price span.discount-percentage {
     text-decoration: none; // con esto invalidamos justo el de arriba
 }
+
+.price-total {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: -7;
+}
