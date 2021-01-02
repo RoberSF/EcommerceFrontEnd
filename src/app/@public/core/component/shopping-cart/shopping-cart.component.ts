@@ -49,5 +49,9 @@ export class ShoppingCartComponent implements OnInit {
     this.shoppingCartService.closeNav()
   }
 
+  toPay() {
+    
+  }
+
 
 }
