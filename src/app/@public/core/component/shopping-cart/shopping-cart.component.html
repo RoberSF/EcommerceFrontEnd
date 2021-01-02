@@ -37,6 +37,18 @@
             </div>
         </div>
     </div>
-    <a (click)="clear()">Borrar</a>
+    <div *ngIf="shoopingCart.total > 0">
+        <div class="row product">
+            <div class="col-lg-5">
+                Subtotal ({{ shoopingCart.subtotal }})
+            </div>
+            <div class="col-lg">
+                Total a pagar: <span class="text-primary float-right price-total">{{ currencySelect }} {{ shoopingCart.total | number}}</span>
+            </div>
+        </div>
+        <hr />
+        <button class="btn btn-success float-right mr-3" (click)="toPay()"> Tramitar Pedido</button>
+        <button class="btn btn-danger float-right mr-2" (click)="clear()"><i class="fas fa-trash-alt"></i>&nbsp; Vaciar carrito</button>
+    </div>
 </div>
 <div id="overlay"></div>
