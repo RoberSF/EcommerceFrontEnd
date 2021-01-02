@@ -10,18 +10,18 @@
             <form class="needs-validation" novalidate="">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="firstName">Nombre</label><br>
-                        <span>Roberto</span>
+                        <label>Nombre</label><br>
+                        <span>{{meData.user.name}}</span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="lastName">Apellidos</label><br>
-                        <span>Sánchez</span>
+                        <label>Apellidos</label><br>
+                        <span>{{meData.user.lastname}}</span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="username">Username</label>
-                    <span>test@gmail.com</span><br>
+                    <label>Email</label><br>
+                    <span>{{meData.user.email}}</span><br>
                 </div>
 
                 <div class="mb-3">
@@ -34,7 +34,7 @@
 
                 <div class="mb-3">
                     <label for="address2">Añadir a dirección <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                    <input type="text" class="form-control" id="address2" placeholder="Casa, apartamento, finca...">
                 </div>
 
                 <hr class="mb-4">

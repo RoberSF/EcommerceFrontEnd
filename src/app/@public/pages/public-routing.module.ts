@@ -19,7 +19,7 @@ const routes: Routes = [
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
       },
       {
-        path: 'ckeckout',
+        path: 'checkout',
         loadChildren: () => import('./forms/checkout/checkout.module').then(m => m.CheckoutModule)
       },
       {

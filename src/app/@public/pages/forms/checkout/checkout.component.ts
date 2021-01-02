@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IMeData } from '../../../core/Interfaces/ISession';
+import { AuthService } from '../../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutComponent implements OnInit {
 
-  constructor() { }
+  meData: IMeData;
 
-  ngOnInit(): void {
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.accessVar$.subscribe( (data: IMeData) => {
+      // Comprobamos el status para validación y o redirigir
+      if ( !data.status) {
+          this.router.navigate( ['/login']);
+          return
+      }
+      this.meData = data;
+    })
+   }
+
+  ngOnInit() {
+    this.authService.start();
   }
 
 }

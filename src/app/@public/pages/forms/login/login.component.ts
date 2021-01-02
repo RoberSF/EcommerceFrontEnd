@@ -37,14 +37,15 @@ export class LoginComponent implements OnInit {
       if(result.status && result.token !== null) {
         this.auth.saveSession(result.token);
         this.auth.updateSession(result);
-        Swal.fire({
-          title: 'Inicio se sesión corecto',
-          position: 'top',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true
-        })
+        if ( localStorage.getItem('route_after_login')) {
+          // comprobamos al hacer login si nos tiene que redireccionar a checkout
+          this.router.navigate([localStorage.getItem('route_after_login')])
+          // Eliminamos la marca del localStorage si no el login nos llevaría siempre a checkout
+          localStorage.removeItem('route_after_login');
+          return
+        }
         this.router.navigate(['/home']);
+        return
       }
     })
     // let usuario: Usuario = new Usuario(null, form.value.email, form.value.password);

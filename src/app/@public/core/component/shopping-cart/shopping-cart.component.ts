@@ -51,7 +51,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   toPay() {
-    this.router.navigate(['/ckeckout']);
+    this.router.navigate(['/checkout']);
     this.shoppingCartService.closeNav()
   }
 
