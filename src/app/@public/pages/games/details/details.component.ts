@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { loadData } from 'src/app/@shared/alerts/alerts';
 import { closeAlert } from '../../../../@shared/alerts/alerts';
 import { CURRENCY_SELECTED } from '../../../../@shared/constants/config';
+import { ShoppingCartService } from '../../../../services/shopping-cart.service';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -20,7 +21,8 @@ export class DetailsComponent implements OnInit {
   randomItems: Array<any> = [];
   loading:boolean;
 
-  constructor(private productService: ProductService, private activatedRoute: ActivatedRoute, private router: Router) { }
+  constructor(private productService: ProductService, private activatedRoute: ActivatedRoute, private router: Router,
+                private shoppingCartService: ShoppingCartService) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
@@ -34,8 +36,8 @@ export class DetailsComponent implements OnInit {
 
   }
 
-  changeValue($event) {
-
+  changeValue(qty: number) {
+      this.product.qty = qty
   }
 
   selectImg(i) {
@@ -60,6 +62,10 @@ export class DetailsComponent implements OnInit {
 
   itemDetail(id: number) {
     this.router.navigate(['/games/details/', id])
+  }
+
+  addToCart() {
+    this.shoppingCartService.manageProduct(this.product)
   }
 
 }
