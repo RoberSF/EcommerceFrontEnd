@@ -6,6 +6,7 @@ import { IMenuItem } from '@shop/core/Interfaces/IMenuItemNavbar';
 import { ShoppingCartService } from '../../../../services/shopping-cart.service';
 import { REDIRECT_ROUTES } from 'src/app/@shared/constants/config';
 import { Router } from '@angular/router';
+import { IShoppingCart } from '../../Interfaces/IShoppingCart';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,8 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+
+  shoppingCartItemsTotal: number;
   menuItems: Array<IMenuItem> = shopMenuItems;
   session: IMeData = {
     status: false
@@ -21,16 +24,22 @@ export class NavbarComponent implements OnInit {
   access = false;
   role: string;
   userLabel = '';
-  constructor(private authService: AuthService, private shoppingCart: ShoppingCartService, private router: Router) {
+  constructor(private authService: AuthService, private shoppingCartService: ShoppingCartService, private router: Router) {
     this.authService.accessVar$.subscribe((result) => {
       this.session = result;
       this.access = this.session.status;
       this.role = this.session.user?.role;
       this.userLabel = `${ this.session.user?.name } ${ this.session.user?.lastname }`;
     });
+    this.shoppingCartService.itemsVar$.subscribe( (data: IShoppingCart) => {
+      if ( data !== undefined && data !== null) {
+        this.shoppingCartItemsTotal = data.subtotal
+      }
+    })
   }
 
   ngOnInit(): void {
+    this.shoppingCartItemsTotal = this.shoppingCartService.initializeCart().subtotal
   }
 
   logout() {
@@ -44,7 +53,7 @@ export class NavbarComponent implements OnInit {
   }
 
   openNav() {
-    this.shoppingCart.openNav()
+    this.shoppingCartService.openNav()
   }
 
 }
