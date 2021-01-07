@@ -7,7 +7,7 @@
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Información sobre el pago</h4>
             <hr>
-            <form class="needs-validation" novalidate="">
+            <form class="needs-validation" (ngSubmit)="sendData()" #form="ngForm">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label>Nombre</label><br>
@@ -26,7 +26,8 @@
 
                 <div class="mb-3">
                     <label for="address">Dirección de entrega</label>
-                    <textarea cols="50" row="5" type="text" class="form-control" id="address" placeholder="Avenida Gran Vía, 5, Vigo, Pontevedra, 36208" required=""></textarea>
+                    <textarea #adressDelivery="ngModel" [(ngModel)]="address" name="address" [ngClass]="{'is-valid' : !adressDelivery.invalid, 'is-invalid' : adressDelivery.invalid}" cols="50" row="5" type="text" class="form-control" id="address" placeholder="Avenida Gran Vía, 5, Vigo, Pontevedra, 36208"
+                        required=""></textarea>
                     <div class="invalid-feedback">
                         Please enter your shipping address.
                     </div>
@@ -56,40 +57,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="cc-name">Nombre del titular</label>
-                        <input type="text" class="form-control" id="cc-name" placeholder="" required="">
-                        <small class="text-muted">Full name as displayed on card</small>
-                        <div class="invalid-feedback">
-                            Name on card is required
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="cc-number">Número de tarjeta</label>
-                        <input type="text" class="form-control" id="cc-number" placeholder="" required="">
-                        <div class="invalid-feedback">
-                            Credit card number is required
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <label for="cc-expiration">Fecha de caducidad</label>
-                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
-                        <div class="invalid-feedback">
-                            Expiration date required
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="cc-cvv">CVV</label>
-                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
-                        <div class="invalid-feedback">
-                            Security code required
-                        </div>
+                    <div class="col-lg">
+
+                        <ng-stripe-pay-form [key]="key" [hidePostalCode]="true"></ng-stripe-pay-form>
+
                     </div>
                 </div>
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continuar con el pedido</button>
+                <button (click)="sendData()" [disabled]="!form.valid" class="signup-btn" type="submit">Continuar con el pedido</button>
             </form>
         </div>
 
