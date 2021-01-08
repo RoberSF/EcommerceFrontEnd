@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,// <====== MUY IMPORTANTE TENER EN CUENTA ESTO PARA AÑADIR las variables de entorno en desarrollo
+  backend: 'http://localhost:2002/graphql',
+  stripePublicKey: 'pk_test_51I5pFbGNRGkVvpVSRH2SYZ0uCn2DNQ8pVYKIlHHmr2Nu4zrsxzMd1RoQwde4xIXD2BrQM0u7FGEmqlrW221jhCDy00lJfBV9xi'
 };
 
 /*
