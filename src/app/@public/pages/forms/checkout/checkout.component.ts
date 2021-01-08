@@ -14,6 +14,9 @@ import { ChargesService } from '../../../../services/stripe/charges.service';
 import { IPayment } from '../../../core/Interfaces/stripe/IStripeDescription';
 import { CURRENCY_CODE } from '../../../../@shared/constants/config';
 import { IShoppingCart } from '../../../core/Interfaces/IShoppingCart';
+import { ICharge } from '../../../core/Interfaces/stripe/ICharge';
+import { IMail } from '../../../core/Interfaces/IMail';
+import { MailService } from '../../../../services/mail.service';
 
 @Component({
   selector: 'app-checkout',
@@ -25,14 +28,16 @@ export class CheckoutComponent implements OnInit {
   meData: IMeData;
   key = environment.stripePublicKey;
   address = '';
-  available = false
+  available = false;
+  blockOnce = false;
 
   constructor(private authService: AuthService, 
     private router: Router, 
     private stripePaymentService: StripePaymentService,
     private shoppingCartService: ShoppingCartService,
     private customerService: CustomerService,
-    private chargesService: ChargesService) {
+    private chargesService: ChargesService,
+    private mailService: MailService) {
     
     this.authService.accessVar$.subscribe( (data: IMeData) => { 
       // Comprobamos el status para validación y o redirigir. Comprobamos que haya sesión iniciada(que estemos registrados)
@@ -74,16 +79,19 @@ export class CheckoutComponent implements OnInit {
             description: this.shoppingCartService.orderDescription(),
             customer: this.meData.user.stripeCustomer,
             currency: CURRENCY_CODE
-           }
+           };
+           this.blockOnce = true;
            loadData('Realizando el pago', 'Espera mientras procesamos la información')
           // Enviar la información y procesar el pago
-          this.chargesService.pay(payment).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: object}) => {
+          this.chargesService.pay(payment).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: ICharge}) => {
             if ( result.status) {
               await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
-              this.shoppingCartService.clear()
+              this.sendEmail(result.charge);
+              this.shoppingCartService.clear();
             } else {
               await infoEventAlert('Pedido no se realizado', '¡¡Inténtelo de nuevo por favor!!', TYPE_ALERT.SUCCESS);
             }
+            this.blockOnce = false;
           })
       }
     })
@@ -105,6 +113,7 @@ export class CheckoutComponent implements OnInit {
     // Eliminamos la ruta puesta después de redirigir tras habernos creado en stripe
     localStorage.removeItem('route_after_login')
 
+    this.blockOnce = false;
     if ( this.shoppingCartService.shoppingCart.total === 0) {
       this.available = false;
       this.notAvailableProducts();
@@ -147,6 +156,18 @@ export class CheckoutComponent implements OnInit {
     }
     // La función ya viene creada con la librería. Necesitamos configurar los enviroments para que coja la apiKey de stripe
     this.stripePaymentService.takeCardToken(true);
+  }
+
+  sendEmail(charge: ICharge) {
+    
+    const mail: IMail = {
+      to: charge.receiptEmail,
+      subject: 'Confirmación del pedido',
+      html: `
+      El pedido se ha realizado correctamente. Puedes consultarlo en <a href="${charge.receiptUrl}" target="_blanck"></a>
+      `
+    }
+    this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
   }
 
 }
