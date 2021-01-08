@@ -9,6 +9,10 @@ import { ShoppingCartService } from '../../../../services/shopping-cart.service'
 import { infoEventAlert } from 'src/app/@shared/alerts/alerts';
 import { CustomerService } from '../../../../services/stripe/customer.service';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
+import { loadData } from '../../../../@shared/alerts/alerts';
+import { ChargesService } from '../../../../services/stripe/charges.service';
+import { IPayment } from '../../../core/Interfaces/stripe/IStripeDescription';
+import { CURRENCY_CODE } from '../../../../@shared/constants/config';
 
 @Component({
   selector: 'app-checkout',
@@ -25,7 +29,8 @@ export class CheckoutComponent implements OnInit {
     private router: Router, 
     private stripePaymentService: StripePaymentService,
     private shoppingCartService: ShoppingCartService,
-    private customerService: CustomerService) {
+    private customerService: CustomerService,
+    private chargesService: ChargesService) {
     
     this.authService.accessVar$.subscribe( (data: IMeData) => { 
       // Comprobamos el status para validación y o redirigir. Comprobamos que haya sesión iniciada(que estemos registrados)
@@ -45,6 +50,25 @@ export class CheckoutComponent implements OnInit {
           // Divisa
           // Cliente de stripe
           // Total a pagar
+          // Descripción del pedido en función del carrito
+          this.shoppingCartService.orderDescription()
+          // Almacenar la información para enviar a stripe
+          const payment: IPayment = {
+            token,
+            amount: this.shoppingCartService.shoppingCart.total.toString(),
+            description: this.shoppingCartService.orderDescription(),
+            customer: this.meData.user.stripeCustomer,
+            currency: CURRENCY_CODE
+           }
+          // Enviar la información y procesar el pago
+          this.chargesService.pay(payment).pipe(take(1)).subscribe( (result: {status: boolean, message: string, charge: object}) => {
+            if ( result.status) {
+              console.log('pago ok');
+              console.log(result.charge);
+            } else {
+              console.log(result.message);
+            }
+          })
       }
     })
    }
@@ -69,6 +93,7 @@ export class CheckoutComponent implements OnInit {
     if ( this.meData.user.stripeCustomer === null ) {
       // Alerta para mostrar info respecto lo vamos a añadir a stripe
       await infoEventAlert('Cliente no existe', 'Necesitamos un cliente para realizar el pago')
+      loadData('Procesando la información', 'Creando el cliente')
       // El nombre del cliente concatenado
       const stripeName = `${this.meData.user.name} ${this.meData.user.lastname}`;
       // Llamada a la api de graphql para crear cliente. Sólo cogemos un click con el take(1). Nuestra api ya se encarga de guardarlo en nuestra DB
