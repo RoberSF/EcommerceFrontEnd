@@ -110,6 +110,19 @@ export class ShoppingCartService {
     return this.shoppingCart;
   }
 
+//**************************************************************************************************
+//                                                                                                   
+//**************************************************************************************************
+
+  orderDescription() {
+    let description = '';
+    this.shoppingCart.products.map( (product: IProduct) => {
+      description += `${product.name} (${product.description}) x ${product.qty}/n`
+    })
+    return description
+  }
+
+
   private setInfo() {
     console.log('localStorage', this.shoppingCart);
     localStorage.setItem('cart', JSON.stringify(this.shoppingCart))
