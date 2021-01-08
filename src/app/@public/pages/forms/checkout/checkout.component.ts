@@ -13,6 +13,7 @@ import { loadData } from '../../../../@shared/alerts/alerts';
 import { ChargesService } from '../../../../services/stripe/charges.service';
 import { IPayment } from '../../../core/Interfaces/stripe/IStripeDescription';
 import { CURRENCY_CODE } from '../../../../@shared/constants/config';
+import { IShoppingCart } from '../../../core/Interfaces/IShoppingCart';
 
 @Component({
   selector: 'app-checkout',
@@ -24,6 +25,7 @@ export class CheckoutComponent implements OnInit {
   meData: IMeData;
   key = environment.stripePublicKey;
   address = '';
+  available = false
 
   constructor(private authService: AuthService, 
     private router: Router, 
@@ -40,10 +42,23 @@ export class CheckoutComponent implements OnInit {
       }
       this.meData = data;
     })
+
+    this.shoppingCartService.itemsVar$.pipe(take(1)).subscribe( (shoppingCart: IShoppingCart) => {
+
+      if ( this.shoppingCartService.shoppingCart.total === 0) {
+        this.available = false;
+        this.notAvailableProducts();
+      }
+    })
   
     // El servicio es creado directamente por la librería de anatz
     this.stripePaymentService.cardTokenVar$.pipe(take(1)).subscribe( (token: string) => { //take() hace que sólo se ejecute una vez, si no puede que el pago se hiciera varias veces
       if ( token.indexOf('tok_') > -1 && this.meData.status && this.address !== '') {
+        
+        if ( this.shoppingCartService.shoppingCart.total === 0) {
+          this.available = false;
+          this.notAvailableProducts();
+        }
           // Podemos enviar los datos
           console.log('Podemos enviar la info');
           // Descripción del pedido. Tenemos que crear función en el carrito
@@ -60,18 +75,21 @@ export class CheckoutComponent implements OnInit {
             customer: this.meData.user.stripeCustomer,
             currency: CURRENCY_CODE
            }
+           loadData('Realizando el pago', 'Espera mientras procesamos la información')
           // Enviar la información y procesar el pago
-          this.chargesService.pay(payment).pipe(take(1)).subscribe( (result: {status: boolean, message: string, charge: object}) => {
+          this.chargesService.pay(payment).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: object}) => {
             if ( result.status) {
-              console.log('pago ok');
-              console.log(result.charge);
+              await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
+              this.shoppingCartService.clear()
             } else {
-              console.log(result.message);
+              await infoEventAlert('Pedido no se realizado', '¡¡Inténtelo de nuevo por favor!!', TYPE_ALERT.SUCCESS);
             }
           })
       }
     })
    }
+
+  
 
   ngOnInit() {
     this.authService.start();
@@ -86,6 +104,20 @@ export class CheckoutComponent implements OnInit {
     this.shoppingCartService.initializeCart();
     // Eliminamos la ruta puesta después de redirigir tras habernos creado en stripe
     localStorage.removeItem('route_after_login')
+
+    if ( this.shoppingCartService.shoppingCart.total === 0) {
+      this.available = false;
+      this.notAvailableProducts();
+    } else {
+      this.available = true
+    }
+  }
+
+  async notAvailableProducts() {
+    this.shoppingCartService.closeNav();
+    this.available = false;
+    await infoEventAlert('Acción no disponible', 'Añade productos al carrito');
+    this.router.navigate(['/'])
   }
 
   async sendData() {
