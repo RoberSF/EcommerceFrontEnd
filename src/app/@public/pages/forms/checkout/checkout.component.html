@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <hr class="mb-4">
-                <button (click)="sendData()" [disabled]="!form.valid" class="signup-btn" type="submit">Pagar pedido</button>
+                <button (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn" type="submit">Pagar pedido</button>
             </form>
         </div>
 
