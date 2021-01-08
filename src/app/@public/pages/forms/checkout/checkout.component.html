@@ -29,7 +29,7 @@
                     <textarea #adressDelivery="ngModel" [(ngModel)]="address" name="address" [ngClass]="{'is-valid' : !adressDelivery.invalid, 'is-invalid' : adressDelivery.invalid}" cols="50" row="5" type="text" class="form-control" id="address" placeholder="Avenida Gran Vía, 5, Vigo, Pontevedra, 36208"
                         required=""></textarea>
                     <div class="invalid-feedback">
-                        Please enter your shipping address.
+                        Por favor, introduce la dirección de envío.
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <hr class="mb-4">
-                <button (click)="sendData()" [disabled]="!form.valid" class="signup-btn" type="submit">Continuar con el pedido</button>
+                <button (click)="sendData()" [disabled]="!form.valid" class="signup-btn" type="submit">Pagar pedido</button>
             </form>
         </div>
 
