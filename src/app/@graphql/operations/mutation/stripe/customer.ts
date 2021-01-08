@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { USER_FRAGMENT } from '@graphql/operations/fragment/user';
 
 
 export const CREATE_CUSTOMER = gql` 
