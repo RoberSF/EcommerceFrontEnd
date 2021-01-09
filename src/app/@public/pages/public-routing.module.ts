@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from 'src/app/guards/admin.guard';
+import { ShopGuard } from 'src/app/guards/shop.guard';
 import { PublicComponent } from './public.component';
-import { DetailsModule } from './games/details/details.module';
-import { CheckoutModule } from './forms/checkout/checkout.module';
 
+//**************************************************************************************************
+//                            Lazy loading                                                           
+//**************************************************************************************************
 
 const routes: Routes = [
   {
@@ -20,7 +23,13 @@ const routes: Routes = [
       },
       {
         path: 'checkout',
-        loadChildren: () => import('./forms/checkout/checkout.module').then(m => m.CheckoutModule)
+        loadChildren: () => import('./forms/checkout/checkout.module').then(m => m.CheckoutModule),
+        canActivate: [ShopGuard],
+      },
+      {
+        path: 'orders',
+        loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule),
+        canActivate: [ShopGuard],
       },
       {
         path: 'games/details/:id',
