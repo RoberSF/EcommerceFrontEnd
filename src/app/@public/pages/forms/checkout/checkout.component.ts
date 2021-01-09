@@ -60,7 +60,7 @@ export class CheckoutComponent implements OnInit {
     this.stripePaymentService.cardTokenVar$.pipe(take(1)).subscribe( (token: string) => { //take() hace que sólo se ejecute una vez, si no puede que el pago se hiciera varias veces
       if ( token.indexOf('tok_') > -1 && this.meData.status && this.address !== '') {
         
-        if ( this.shoppingCartService.shoppingCart.total === 0) {
+        if ( this.shoppingCartService.shoppingCart.total === 0 && this.available === false) {
           this.available = false;
           this.notAvailableProducts();
         }
@@ -87,6 +87,7 @@ export class CheckoutComponent implements OnInit {
             if ( result.status) {
               await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
               this.sendEmail(result.charge);
+              this.router.navigate(['/orders']);
               this.shoppingCartService.clear();
             } else {
               await infoEventAlert('Pedido no se realizado', '¡¡Inténtelo de nuevo por favor!!', TYPE_ALERT.SUCCESS);
