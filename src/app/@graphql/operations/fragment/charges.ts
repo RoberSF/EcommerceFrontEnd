@@ -9,6 +9,7 @@ export const PAYMENT_FRAGMENT = gql `
 
 fragment ChargeObject on StripeCharge {
     id
+    description
     card
     paid
     customer
