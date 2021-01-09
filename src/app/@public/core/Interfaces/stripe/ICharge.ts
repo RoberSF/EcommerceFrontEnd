@@ -1,5 +1,6 @@
 export interface ICharge {
     id: string;
+    description: string;
     card: string;
     paid: boolean;
     customer: string;
