@@ -54,3 +54,12 @@ mutation blockGenre($id: ID!) {
   }
 }
   `;
+
+export const UNBLOCK_GENRE = gql`
+mutation unBlockGenre($id: ID!) {
+  unBlockGenre(id: $id) {
+      status
+      message
+    }
+  }
+  `;
