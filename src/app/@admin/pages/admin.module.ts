@@ -12,7 +12,7 @@ import { SidebarComponent } from '@admin-core/components/sidebar/sidebar.compone
   declarations: [AdminComponent, HeaderComponent, TitleComponent, SidebarComponent],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
   ]
 })
 export class AdminModule { }
