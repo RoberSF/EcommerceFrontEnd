@@ -28,6 +28,7 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
       this.loadDataValue(+params.id)
+      this.listenerStock(+params.id)
       loadData('Loading', `<div class="lds-roller"><div>`);
       this.loading = true
       this.productService.itemsRandom().subscribe( result => {
@@ -84,6 +85,20 @@ export class DetailsComponent implements OnInit {
 
   addToCart() {
     this.shoppingCartService.manageProduct(this.product)
+  }
+
+  listenerStock(id: number) {
+    this.productService.stockUpdateListener(id).subscribe( (result: any) => {
+      this.product.stock = result.stock
+
+      // Comprobar que el qty no sea mayor que el stock una vez escuchado el listener
+      if ( this.product.qty > this.product.stock ) { }
+        this.product.qty = this.product.stock
+    })
+
+    if (this.product.stock === 0 ) {
+      this.product.qty = 1
+    }
   }
 
 
