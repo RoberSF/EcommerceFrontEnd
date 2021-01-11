@@ -16,6 +16,10 @@ export class ApiService {
   //        Consumir servicios de la Api hecha con graphql                                                          
   //**************************************************************************************************
 
+  //**************************************************************************************************
+  //          Configuración para subscribirse a los métodos de la Api para hacer mutation                                                           
+  //**************************************************************************************************
+
   // Ponemos protected para que solo se pueda acceder a ella desde el hijo o en la propia clase
   protected get(query: DocumentNode, variables: object = {}, context: object = {}, cache: boolean = true) {
     return this.apollo.watchQuery({
@@ -28,11 +32,27 @@ export class ApiService {
     })
     )}
 
+    //**************************************************************************************************
+    //          Configuración para subscribirse a los métodos de la Api para hacer mutation                                                           
+    //**************************************************************************************************
     protected set(mutation: DocumentNode, variables: object = {}, context: object = {}) {
       return this.apollo.mutate({
         mutation,
         variables,
         context
+      }).pipe(map( (result) => {
+        return result.data;
+      })) 
+    };
+
+    //**************************************************************************************************
+    //          Configuración para subscribirse a los métodos de la Api de subscription                                                           
+    //**************************************************************************************************
+    
+    protected subscription(subscription: DocumentNode, variables: object = {}) {
+      return this.apollo.subscribe({
+        query: subscription,
+        variables,
       }).pipe(map( (result) => {
         return result.data;
       })) 
