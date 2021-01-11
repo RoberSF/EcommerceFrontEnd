@@ -6,6 +6,8 @@ import { formBasicDialog, optionsWithDetails } from 'src/app/@shared/alerts/aler
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { TitleService } from '@admin/core/services/titleService.service';
+import { TagService } from '../../../services/tag.service';
+import { TAGS_LIST_QUERY } from '@graphql/operations/query/tags';
 
 @Component({
   selector: 'app-tags',
@@ -14,24 +16,25 @@ import { TitleService } from '@admin/core/services/titleService.service';
 })
 export class TagsComponent implements OnInit {
 
-  query: DocumentNode
+  query: DocumentNode = TAGS_LIST_QUERY
   context: object;
   itemsPerPage: number;
   resultData: IResultData;
   include: boolean;
   columns: Array<ITableColumns>
+  filterActiveValue = 'ACTIVE';
   
-  constructor(private titleService: TitleService) { }
+  constructor(private titleService: TitleService, private tagService: TagService) { }
 
   ngOnInit(): void {
     this.titleService.updateTitle('Tags')
     this.context = {};
-    this.itemsPerPage = 10;
+    this.itemsPerPage = 20;
     this.resultData = {
       listKey: 'tags',
       definitionKey: 'tags'
     };
-    this.include = false
+    this.include = true
     this.columns = [
       {
         property: 'id',
@@ -45,6 +48,10 @@ export class TagsComponent implements OnInit {
         property: 'slug',
         label: 'Slug'
       },
+      {
+        property: 'active',
+        label: '¿Activo?'
+      },
     ]
   }
 
@@ -52,10 +59,10 @@ export class TagsComponent implements OnInit {
 
     // Coger la información para las acciones por separado
     const action = $event[0];
-    const genre = $event[1];
+    const tag = $event[1];
 
     // Cogemos el valor por defecto
-    const defaultValue = genre.name !== undefined && genre.name !== '' ? genre.name : '';
+    const defaultValue = tag.name !== undefined && tag.name !== '' ? tag.name : '';
     const html = `<input id="name" value="${defaultValue}" class="swal2-input" required>`;
 
     switch (action) {
@@ -64,25 +71,28 @@ export class TagsComponent implements OnInit {
         this.addForm(html);
         break;
       case 'edit':
-        this.updateForm(html, genre);
+        this.updateForm(html, tag);
         break;
       case 'info':
         const result = await optionsWithDetails(
           'Detalles',
-          `${genre.name} (${genre.slug})`,
+          `${tag.name} (${tag.slug})`,
           375,
           '<i class="fas fa-edit"></i> Editar', // true
           '<i class="fas fa-lock"></i> Bloquear'
         ); // false
         if (result) {
-          this.updateForm(html, genre);
+          this.updateForm(html, tag);
         } else if (result === false) {
-          this.blockForm(genre);
+          this.blockForm(tag);
         }
         break;
       case 'block':
-        this.blockForm(genre);
+        this.blockForm(tag);
         break;
+        case 'unblock':
+          this.unBlockForm(tag);
+          break;
       default:
         break;
     }
@@ -94,42 +104,42 @@ export class TagsComponent implements OnInit {
 //**************************************************************************************************
                 
   private async addForm(html: string) {
-    const result = await formBasicDialog('Añadir género', html, 'name');
-    this.addGenre(result);
+    const result = await formBasicDialog('Añadir tag', html, 'name');
+    this.addTag(result);
   }
 
-  private addGenre(result) {
-    // if (result.value) {
-    //   this.genreService.add(result.value).subscribe((res: any) => {
-    //     if (res.status) {
-    //       basicAlert(TYPE_ALERT.SUCCESS, res.message);
-    //       return;
-    //     }
-    //       basicAlert(TYPE_ALERT.WARNING, res.message);
-    //   });
-    // }
+  private addTag(result) {
+    if (result.value) {
+      this.tagService.add(result.value).subscribe((res: any) => {
+        if (res.status) {
+          basicAlert(TYPE_ALERT.SUCCESS, res.message);
+          return;
+        }
+          basicAlert(TYPE_ALERT.WARNING, res.message);
+      });
+    }
   }
 
   //**************************************************************************************************
   //                    Métodos para actualizar género                                                           
   //**************************************************************************************************
   
-  private async updateForm(html: string, genre: any) {
-    const result = await formBasicDialog('Modificar género', html, 'name');
-    this.updateGenre(genre.id, result);
+  private async updateForm(html: string, tag: any) {
+    const result = await formBasicDialog('Modificar tag', html, 'name');
+    this.updateTag(tag.id, result);
   }
 
-  private updateGenre(id: string, result) {
-    // if (result.value) {
-    //   this.genreService.update(id, result.value).subscribe((res: any) => {
-    //     console.log(res);
-    //     if (res.status) {
-    //       basicAlert(TYPE_ALERT.SUCCESS, res.message);
-    //       return;
-    //     }
-    //     basicAlert(TYPE_ALERT.WARNING, res.message);
-    //   });
-    // }
+  private updateTag(id: string, result) {
+    if (result.value) {
+      this.tagService.update(id, result.value).subscribe((res: any) => {
+        console.log(res);
+        if (res.status) {
+          basicAlert(TYPE_ALERT.SUCCESS, res.message);
+          return;
+        }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+      });
+    }
   }
 
   //**************************************************************************************************
@@ -137,17 +147,31 @@ export class TagsComponent implements OnInit {
   //**************************************************************************************************
   
 
-  private blockGenre(id: string) {
-    // this.genreService.block(id).subscribe((res: any) => {
-    //   if (res.status) {
-    //     basicAlert(TYPE_ALERT.SUCCESS, res.message);
-    //     return;
-    //   }
-    //   basicAlert(TYPE_ALERT.WARNING, res.message);
-    // });
+  private blockTag(id: string) {
+    this.tagService.block(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+      basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
   }
 
-  private async blockForm(genre: any) {
+  //**************************************************************************************************
+  //              Método para desbloquear un género                                                           
+  //**************************************************************************************************
+
+  private unBlockTag(id: string) {
+    this.tagService.unBlock(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+  private async blockForm(tag: any) {
     const result = await optionsWithDetails(
       '¿Bloquear?',
       `Si bloqueas el item seleccionado, no se mostrará en la lista`,
@@ -157,7 +181,27 @@ export class TagsComponent implements OnInit {
     );
     if (result === false) {
       // Si resultado falso, queremos bloquear
-      this.blockGenre(genre.id);
+      this.blockTag(tag.id);
+    }
+  }
+
+  private async unBlockForm(tag: any) {
+
+
+    const result =
+
+      await optionsWithDetails(
+        '¿Desloquear?',
+        `Si desbloqueas el item seleccionado, se mostrará en la lista `,
+        500,
+        'No, no desbloquear',
+        'Si, desbloquear'
+      ) 
+
+    if(result == false) {
+      this.unBlockTag(tag.id);
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
     }
   }
 
