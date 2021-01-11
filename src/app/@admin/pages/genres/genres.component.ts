@@ -23,6 +23,7 @@ export class GenresComponent implements OnInit  {
   resultData: IResultData;
   include: boolean;
   columns: Array<ITableColumns>
+  filterActiveValue = 'ACTIVE';
 
   constructor(private genreService: GenresService, private titleService: TitleService) { }
 
@@ -47,6 +48,10 @@ export class GenresComponent implements OnInit  {
       {
         property: 'slug',
         label: 'Slug'
+      },
+      {
+        property: 'active',
+        label: '¿Activo?'
       },
     ]
   }
@@ -92,6 +97,9 @@ export class GenresComponent implements OnInit  {
       case 'block':
         this.blockForm(genre);
         break;
+        case 'unblock':
+          this.unBlockForm(genre);
+          break;
       default:
         break;
     }
@@ -156,6 +164,20 @@ export class GenresComponent implements OnInit  {
     });
   }
 
+  //**************************************************************************************************
+  //              Método para desbloquear un género                                                           
+  //**************************************************************************************************
+
+  private unBlockGenre(id: string) {
+    this.genreService.unBlock(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
   private async blockForm(genre: any) {
     const result = await optionsWithDetails(
       '¿Bloquear?',
@@ -169,6 +191,29 @@ export class GenresComponent implements OnInit  {
       this.blockGenre(genre.id);
     }
   }
+
+  private async unBlockForm(genre: any) {
+
+
+    const result =
+
+      await optionsWithDetails(
+        '¿Desloquear?',
+        `Si desbloqueas el item seleccionado, se mostrará en la lista `,
+        500,
+        'No, no desbloquear',
+        'Si, desbloquear'
+      ) 
+
+    if(result == false) {
+      this.unBlockGenre(genre.id);
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
+    }
+  }
+
+
+
 
 
 
