@@ -16,7 +16,6 @@ export class AdminGuard implements CanActivateChild {
     if (this.auth.getSession() !== null) {
       console.log('Estamos logueados');
       const dataDecode = this.decodeToken() as any;
-      console.log(dataDecode);
       // Comprobar que no está caducado el token
       if (dataDecode.exp < new Date().getTime() / 1000) {
         console.log('Sesión caducada');
@@ -29,7 +28,6 @@ export class AdminGuard implements CanActivateChild {
       }
       console.log('NO somos administradores');
     }
-    console.log('Sesion no iniciada');
     return this.redirect();
   }
   redirect() {
