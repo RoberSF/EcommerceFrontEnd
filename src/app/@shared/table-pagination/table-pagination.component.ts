@@ -100,7 +100,7 @@ loading:boolean;
 
 
   //**************************************************************************************************
-  //     Mñetodo para manejar las acciones de los botones edit,info & block                                                           
+  //     Metodo para manejar las acciones de los botones edit,info & block                                                           
   //**************************************************************************************************
   
   manageAction(action: string, data: any) {
