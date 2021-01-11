@@ -4,8 +4,8 @@ import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
 
 export const GENRE_LIST_QUERY = gql`
 
-    query genres($page: Int!, $itemsPage: Int) {
-      genres(page: $page, itemsPerPage: $itemsPage) {
+    query genres($page: Int!, $itemsPage: Int, $active:ActiveFilterEnum) {
+      genres(page: $page, itemsPerPage: $itemsPage, active: $active) {
         info {
           ...ResultInfoObject
         }
