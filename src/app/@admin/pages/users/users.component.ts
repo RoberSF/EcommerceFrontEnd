@@ -3,8 +3,7 @@ import { DocumentNode } from 'graphql';
 import { IResultData } from '../../../@public/core/Interfaces/IResultData';
 import { USERS_LIST_QUERY } from '../../../@graphql/operations/query/user';
 import { ITableColumns } from '../../../@public/core/Interfaces/ITableColumns';
-import {  formBasicDialog, optionsWithDetails, userFormBasicDialog } from 'src/app/@shared/alerts/alerts';
-import { GenresService } from 'src/app/services/genres.service';
+import { optionsWithDetails, userFormBasicDialog } from 'src/app/@shared/alerts/alerts';
 import { UsersService } from '../../../services/users.service';
 import { IRegisterForm } from '../../../@public/core/Interfaces/IRegister';
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
@@ -26,7 +25,7 @@ export class UsersComponent implements OnInit {
   columns: Array<ITableColumns>
   filterActiveValue = 'ACTIVE'
 
-  constructor(private genreService: GenresService, private userService: UsersService, private titleService: TitleService) { }
+  constructor(private userService: UsersService, private titleService: TitleService) { }
 
   ngOnInit(): void {
     this.titleService.updateTitle('Usuarios')
