@@ -7,6 +7,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { ISession } from '../@public/core/Interfaces/ISession';
 import { IMeData } from '@shop/core/Interfaces/ISession';
 import { Subject } from 'rxjs';
+import { optionsWithDetails } from 'src/app/@shared/alerts/alerts';
+import { REDIRECT_ROUTES } from 'src/app/@shared/constants/config';
 
 
 
@@ -86,7 +88,24 @@ login(email: String, password: String) {
     }));
   }
   
-  resetSession() {
+  async resetSession(routesURL: string = '') {
+    const result = await optionsWithDetails(
+      'Cerrar sesión',
+      'Estás seguro que quieres cerrar la sesión?',
+      400,
+      'Si, cerrar', //true
+      'No, permanecer' //false
+    );
+
+    if ( !result) {
+      return
+    }
+    
+    // rutas que usaremos para redireccionar
+    if ( REDIRECT_ROUTES.includes(routesURL)) {// con includes() comprobamos si existe esa url en la constante
+      localStorage.setItem('route_after_login', routesURL);
+    } 
+
     localStorage.removeItem('session');
     this.updateSession({status:false});
   }
