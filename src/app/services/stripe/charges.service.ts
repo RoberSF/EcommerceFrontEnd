@@ -5,6 +5,7 @@ import { IPayment } from '../../@public/core/Interfaces/stripe/IStripeDescriptio
 import { STRIPE_PAYMENT } from '../../@graphql/operations/mutation/stripe/charges';
 import { map } from 'rxjs/internal/operators/map';
 import { CHARGES_CUSTOMER_LIST_QUERY } from '@graphql/operations/query/stripe/charges';
+import { IStock } from '@shop/core/Interfaces/IStock';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class ChargesService extends ApiService {
     super(apollo);
 }
 
-pay(payment: IPayment) {
-    return this.set(STRIPE_PAYMENT, {payment}).pipe(map( (result: any) => {
+pay(payment: IPayment, stockChange: Array<IStock>) {
+    return this.set(STRIPE_PAYMENT, {payment, stockChange}).pipe(map( (result: any) => {
             return result.chargeOrder
     }))
 }
