@@ -1,38 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { GENRE_LIST_QUERY } from '@graphql/operations/query/genre';
+import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
 import { formBasicDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
+import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
-import { GenresService } from 'src/app/services/genres.service';
-import { IResultData } from '../../../@public/core/Interfaces/IResultData';
-import { basicAlert } from '../../../@shared/alerts/toasts';
 import { TitleService } from '@admin/core/services/titleService.service';
 
 @Component({
-  selector: 'app-genres',
-  templateUrl: './genres.component.html',
-  styleUrls: ['./genres.component.scss']
+  selector: 'app-tags',
+  templateUrl: './tags.component.html',
+  styleUrls: ['./tags.component.scss']
 })
-export class GenresComponent implements OnInit  {
+export class TagsComponent implements OnInit {
 
-
-  query: DocumentNode = GENRE_LIST_QUERY;
+  query: DocumentNode
   context: object;
   itemsPerPage: number;
   resultData: IResultData;
   include: boolean;
   columns: Array<ITableColumns>
-
-  constructor(private genreService: GenresService, private titleService: TitleService) { }
+  
+  constructor(private titleService: TitleService) { }
 
   ngOnInit(): void {
-    this.titleService.updateTitle('Géneros')
+    this.titleService.updateTitle('Tags')
     this.context = {};
     this.itemsPerPage = 10;
     this.resultData = {
-      listKey: 'genres',
-      definitionKey: 'genres'
+      listKey: 'tags',
+      definitionKey: 'tags'
     };
     this.include = false
     this.columns = [
@@ -51,12 +48,6 @@ export class GenresComponent implements OnInit  {
     ]
   }
 
-
-  //**************************************************************************************************
-  //         Contiene las acción genérica que tiene que desarrollarse al hacer click en alguno de
-  //           los botones implementados en el table-pagination                                                 
-  //**************************************************************************************************
-    
   async buttonsEdit($event) {
 
     // Coger la información para las acciones por separado
@@ -108,15 +99,15 @@ export class GenresComponent implements OnInit  {
   }
 
   private addGenre(result) {
-    if (result.value) {
-      this.genreService.add(result.value).subscribe((res: any) => {
-        if (res.status) {
-          basicAlert(TYPE_ALERT.SUCCESS, res.message);
-          return;
-        }
-          basicAlert(TYPE_ALERT.WARNING, res.message);
-      });
-    }
+    // if (result.value) {
+    //   this.genreService.add(result.value).subscribe((res: any) => {
+    //     if (res.status) {
+    //       basicAlert(TYPE_ALERT.SUCCESS, res.message);
+    //       return;
+    //     }
+    //       basicAlert(TYPE_ALERT.WARNING, res.message);
+    //   });
+    // }
   }
 
   //**************************************************************************************************
@@ -129,16 +120,16 @@ export class GenresComponent implements OnInit  {
   }
 
   private updateGenre(id: string, result) {
-    if (result.value) {
-      this.genreService.update(id, result.value).subscribe((res: any) => {
-        console.log(res);
-        if (res.status) {
-          basicAlert(TYPE_ALERT.SUCCESS, res.message);
-          return;
-        }
-        basicAlert(TYPE_ALERT.WARNING, res.message);
-      });
-    }
+    // if (result.value) {
+    //   this.genreService.update(id, result.value).subscribe((res: any) => {
+    //     console.log(res);
+    //     if (res.status) {
+    //       basicAlert(TYPE_ALERT.SUCCESS, res.message);
+    //       return;
+    //     }
+    //     basicAlert(TYPE_ALERT.WARNING, res.message);
+    //   });
+    // }
   }
 
   //**************************************************************************************************
@@ -147,13 +138,13 @@ export class GenresComponent implements OnInit  {
   
 
   private blockGenre(id: string) {
-    this.genreService.block(id).subscribe((res: any) => {
-      if (res.status) {
-        basicAlert(TYPE_ALERT.SUCCESS, res.message);
-        return;
-      }
-      basicAlert(TYPE_ALERT.WARNING, res.message);
-    });
+    // this.genreService.block(id).subscribe((res: any) => {
+    //   if (res.status) {
+    //     basicAlert(TYPE_ALERT.SUCCESS, res.message);
+    //     return;
+    //   }
+    //   basicAlert(TYPE_ALERT.WARNING, res.message);
+    // });
   }
 
   private async blockForm(genre: any) {
@@ -169,8 +160,5 @@ export class GenresComponent implements OnInit  {
       this.blockGenre(genre.id);
     }
   }
-
-
-
 
 }

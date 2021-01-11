@@ -1,3 +1,4 @@
+import { TitleService } from '@admin/core/services/titleService.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleService: TitleService) { }
 
   ngOnInit(): void {
+    this.titleService.updateTitle('Inicio')
   }
 
 }

@@ -20,3 +20,18 @@ p {
 a {
     top: 14%;
 }
+
+a:hover {
+    text-decoration: underline;
+    background-color: rgb(204, 199, 199);
+}
+
+.faq {
+    margin-top: 10px;
+}
+
+.delivery {
+    position: relative;
+    top: 30px;
+    left: 170px
+}

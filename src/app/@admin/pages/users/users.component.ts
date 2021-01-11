@@ -9,6 +9,7 @@ import { UsersService } from '../../../services/users.service';
 import { IRegisterForm } from '../../../@public/core/Interfaces/IRegister';
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
+import { TitleService } from '@admin/core/services/titleService.service';
 
 @Component({
   selector: 'app-users',
@@ -25,9 +26,10 @@ export class UsersComponent implements OnInit {
   columns: Array<ITableColumns>
   filterActiveValue = 'ACTIVE'
 
-  constructor(private genreService: GenresService, private userService: UsersService) { }
+  constructor(private genreService: GenresService, private userService: UsersService, private titleService: TitleService) { }
 
   ngOnInit(): void {
+    this.titleService.updateTitle('Usuarios')
     this.context = {};
     this.itemsPerPage = 10;
     this.resultData = {

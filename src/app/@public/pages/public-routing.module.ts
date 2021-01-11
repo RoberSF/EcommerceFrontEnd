@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from 'src/app/guards/admin.guard';
 import { ShopGuard } from 'src/app/guards/shop.guard';
 import { PublicComponent } from './public.component';
+import { FaqModule } from './faq/faq.module';
 
 //**************************************************************************************************
 //                            Lazy loading                                                           
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'contact',
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('./faq/faq.module').then(m => m.FaqModule)
       },
       {
         path: 'checkout',
@@ -58,7 +63,7 @@ const routes: Routes = [
       {
         path: 'reset/:token',
         loadChildren: () => import('./forms/change-password/change-password.module').then(m => m.ChangePasswordModule)
-      },
+      }
     ]
   }
 ];

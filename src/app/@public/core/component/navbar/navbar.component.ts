@@ -7,6 +7,7 @@ import { ShoppingCartService } from '../../../../services/shopping-cart.service'
 import { REDIRECT_ROUTES } from 'src/app/@shared/constants/config';
 import { Router } from '@angular/router';
 import { IShoppingCart } from '../../Interfaces/IShoppingCart';
+import { optionsWithDetails } from 'src/app/@shared/alerts/alerts';
 
 @Component({
   selector: 'app-navbar',
@@ -42,7 +43,19 @@ export class NavbarComponent implements OnInit {
     this.shoppingCartItemsTotal = this.shoppingCartService.initializeCart().subtotal
   }
 
-  logout() {
+  async logout() {
+
+    const result = await optionsWithDetails(
+      'Cerrar sesión',
+      'Estás seguro que quieres cerrar la sesión?',
+      400,
+      'Si, cerrar', //true
+      'No, permanecer' //false
+    );
+
+    if ( !result) {
+      return
+    }
     
     // rutas que usaremos para redireccionar
     if ( REDIRECT_ROUTES.includes(this.router.url)) {// con includes() comprobamos si existe esa url en la constante

@@ -9,13 +9,13 @@
         "icon": "fas fa-id-card"
     },
     {
-        "url": "/admin/tags",
-        "label": "Tags(etiquetas)-noWorks",
+        "url": "/admin/genres",
+        "label": "Géneros",
         "icon": "fas fa-atlas"
     },
     {
-        "url": "/admin/genres",
-        "label": "Géneros",
+        "url": "/admin/tags",
+        "label": "Tags(etiquetas)- no finish",
         "icon": "fas fa-atlas"
     }
 ]
