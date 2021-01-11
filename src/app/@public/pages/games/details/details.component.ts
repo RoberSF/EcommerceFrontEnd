@@ -61,8 +61,14 @@ export class DetailsComponent implements OnInit {
     this.selectImage = this.screenshoots[i] //con el i lo que hago es pasarle la posición del Array
   }
 
-  otherPlatform(event){
-    this.loadDataValue(+event.target.value)
+  otherPlatform($event){
+    const id = +$event.target.value
+    this.loadDataValue(id)
+    //**************************************************************************************************************************
+    //    Esto lo hacemos por que al cambiar de plataforma en details, la url no se cambia, es decir, seguiría el id
+    //      del juego pero con la plataforma anterior. Como consecuencia no nos valdría el path para hacer consultas. Ahora sí                                                             
+    //**************************************************************************************************************************
+    window.history.replaceState( {}, '', `/#/games/details/${id}`)
   }
 
 
@@ -91,14 +97,17 @@ export class DetailsComponent implements OnInit {
     this.productService.stockUpdateListener(id).subscribe( (result: any) => {
       this.product.stock = result.stock
 
-      // Comprobar que el qty no sea mayor que el stock una vez escuchado el listener
-      if ( this.product.qty > this.product.stock ) { }
+      //Comprobar que el qty no sea mayor que el stock una vez escuchado el listener
+      if ( this.product.qty > this.product.stock ) {
         this.product.qty = this.product.stock
+       }
+      if (this.product.stock === 0) {
+        this.product.qty = 1
+      }
+        
     })
 
-    if (this.product.stock === 0 ) {
-      this.product.qty = 1
-    }
+
   }
 
 
