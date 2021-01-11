@@ -7,6 +7,7 @@ import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
 import { PRODUCT_DETAILS, PRODUCT_RANDOM } from '../@graphql/operations/query/product';
+import { SUBSCRIPTIONS_PRODUCT_SELECT_STOCK } from '../@graphql/operations/subscriptions/product';
 
 
 @Injectable({
@@ -72,6 +73,12 @@ itemsRandom() {
     const data = result.randomItems.products;
     return this.manageInfo(data, true)
   }))
+}
+
+stockUpdateListener(id: number) {
+  return this.subscription(SUBSCRIPTIONS_PRODUCT_SELECT_STOCK, { id }).pipe(map( (result: any) => {
+    return result.selectProductStockUpdate
+  }));
 }
 
 
