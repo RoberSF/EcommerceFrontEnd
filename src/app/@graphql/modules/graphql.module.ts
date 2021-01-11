@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { HttpLink, HttpLinkModule } from 'apollo-angular-link-http';
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { onError } from 'apollo-link-error';
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, split} from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpClientModule } from '@angular/common/http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
 
 
 //**************************************************************************************************
@@ -33,12 +35,31 @@ export class GraphqlModule {
       }
     });
     const uri = 'http://localhost:2002/graphql';
-    const link = ApolloLink.from(
-      [
-        errorLink,
-        httpLink.create({uri})
-      ]
-    );
+    const urlLink = ApolloLink.from([errorLink,httpLink.create({uri})]);
+
+    //**************************************************************************************************
+    //         Configuración para cnectarse al websocket                                                           
+    //**************************************************************************************************
+    
+    const subscriptionLink = new WebSocketLink(
+      {uri: 'ws://localhost:2002/graphql',
+      options: {
+        reconnect: true
+      } });
+
+    const link = split( 
+      ( {query}) => {
+        const  { kind, operation}: any = getMainDefinition(query)
+        return kind === 'OperationDefinition' && operation === 'subscription'
+      }, 
+      subscriptionLink,
+      urlLink)
+
+
+//**************************************************************************************************
+//                                  Abre conexión                                                           
+//**************************************************************************************************
+
     apollo.create({
       link,
       cache: new InMemoryCache()
