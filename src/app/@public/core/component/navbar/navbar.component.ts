@@ -45,24 +45,8 @@ export class NavbarComponent implements OnInit {
 
   async logout() {
 
-    const result = await optionsWithDetails(
-      'Cerrar sesión',
-      'Estás seguro que quieres cerrar la sesión?',
-      400,
-      'Si, cerrar', //true
-      'No, permanecer' //false
-    );
-
-    if ( !result) {
-      return
-    }
-    
-    // rutas que usaremos para redireccionar
-    if ( REDIRECT_ROUTES.includes(this.router.url)) {// con includes() comprobamos si existe esa url en la constante
-      localStorage.setItem('route_after_login', this.router.url);
-    } 
-    // En caso de encontrarla, marcamos para que redireccione
-    this.authService.resetSession();
+        // En caso de encontrarla, marcamos para que redireccione
+        this.authService.resetSession(this.router.url);
   }
 
   openNav() {
