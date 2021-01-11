@@ -7,3 +7,5 @@
 # En tsconfig tenemos configuración para la utilización de paths absolutos
 
 # En el mismo tsconfig tenemos configurado para utilizar json en la app
+
+# apollo-link-ws para conectarnos la info a tiempo real con la Api
