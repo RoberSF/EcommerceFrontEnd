@@ -17,6 +17,8 @@ import { IShoppingCart } from '../../../core/Interfaces/IShoppingCart';
 import { ICharge } from '../../../core/Interfaces/stripe/ICharge';
 import { IMail } from '../../../core/Interfaces/IMail';
 import { MailService } from '../../../../services/mail.service';
+import { IStock } from '@shop/core/Interfaces/IStock';
+import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 
 @Component({
   selector: 'app-checkout',
@@ -38,7 +40,16 @@ export class CheckoutComponent implements OnInit {
     private customerService: CustomerService,
     private chargesService: ChargesService,
     private mailService: MailService) {
+
+      //****************************************************************************************************************************************************************************************************
+      //                         Trabajamos desde el constructor ya que la librería de Anatz funciona así. 
+      //                                           Explicación en anotaciones   
+      //                         Realizamos el pago así como otras operaciones de validación y actualización a tiempo real del stock                                          
+      //****************************************************************************************************************************************************************************************************
+      
     
+    // ****************************************************************************************************************************************************************************************************
+    // Escuchamos el observable para recoger mis datos de usuario para que sea válido efectuar el pago
     this.authService.accessVar$.subscribe( (data: IMeData) => { 
       // Comprobamos el status para validación y o redirigir. Comprobamos que haya sesión iniciada(que estemos registrados)
       if ( !data.status) {
@@ -48,6 +59,9 @@ export class CheckoutComponent implements OnInit {
       this.meData = data;
     })
 
+
+    // ****************************************************************************************************************************************************************************************************
+    // Comprobamos que el carrito tenga elementos para pagar
     this.shoppingCartService.itemsVar$.pipe(take(1)).subscribe( (shoppingCart: IShoppingCart) => {
 
       if ( this.shoppingCartService.shoppingCart.total === 0) {
@@ -56,7 +70,12 @@ export class CheckoutComponent implements OnInit {
       }
     })
   
+
+    // ****************************************************************************************************************************************************************************************************
+    // Empezamos con el proceso de pago
     // El servicio es creado directamente por la librería de anatz
+
+    // Mandamos crear el token de stripe y comprobamos que se ha creado para validar
     this.stripePaymentService.cardTokenVar$.pipe(take(1)).subscribe( (token: string) => { //take() hace que sólo se ejecute una vez, si no puede que el pago se hiciera varias veces
       if ( token.indexOf('tok_') > -1 && this.meData.status && this.address !== '') {
         
@@ -65,14 +84,16 @@ export class CheckoutComponent implements OnInit {
           this.notAvailableProducts();
         }
           // Podemos enviar los datos
-          console.log('Podemos enviar la info');
           // Descripción del pedido. Tenemos que crear función en el carrito
           // Divisa
           // Cliente de stripe
           // Total a pagar
+          //**************************************************************************************************
           // Descripción del pedido en función del carrito
-          this.shoppingCartService.orderDescription()
-          // Almacenar la información para enviar a stripe
+          this.shoppingCartService.orderDescription();
+
+          //**************************************************************************************************
+          // Almacenar la información para enviar a stripe creando el objeto
           const payment: IPayment = {
             token,
             amount: this.shoppingCartService.shoppingCart.total.toString(),
@@ -80,10 +101,24 @@ export class CheckoutComponent implements OnInit {
             customer: this.meData.user.stripeCustomer,
             currency: CURRENCY_CODE
            };
+
+           // **************************************************************************************************
+           // Recorremos el array del carrito para la actualización a tiempo real del stock
+           const stockManage: Array<IStock> = [];
+           this.shoppingCartService.shoppingCart.products.map( (item: IProduct) => {
+             stockManage.push( {
+               id: +item.id,
+               increment: item.qty * (-1)
+             })
+           })
+
+           // Desloquea el botón para hacer el pago
            this.blockOnce = true;
-           loadData('Realizando el pago', 'Espera mientras procesamos la información')
-          // Enviar la información y procesar el pago
-          this.chargesService.pay(payment).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: ICharge}) => {
+
+           loadData('Realizando el pago', 'Espera mientras procesamos la información');
+
+          // Enviar la información a la api para procesar el pago
+          this.chargesService.pay(payment, stockManage).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: ICharge}) => {
             if ( result.status) {
               await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
               this.sendEmail(result.charge);
@@ -92,6 +127,7 @@ export class CheckoutComponent implements OnInit {
             } else {
               await infoEventAlert('Pedido no se realizado', '¡¡Inténtelo de nuevo por favor!!', TYPE_ALERT.SUCCESS);
             }
+            // Una vez realizado el pago se bloquea el botón
             this.blockOnce = false;
           })
       }
@@ -101,6 +137,11 @@ export class CheckoutComponent implements OnInit {
   
 
   ngOnInit() {
+
+    //****************************************************************************************************************************************************************************************************
+    //                              Redirecciones y guardar en el storage( info y rutas) para cuando me logueo antes de hacer el pago                                                           
+    //****************************************************************************************************************************************************************************************************
+    
     this.authService.start();
     // Después de redirigir, al recargar que vea si hay info del checkout y que la rellene automáticamente
     if ( localStorage.getItem('address')) {
