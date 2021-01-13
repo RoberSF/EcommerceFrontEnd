@@ -6,6 +6,7 @@ import { CheckoutComponent } from './checkout.component';
 import { CheckoutResumeModule } from './checkout-resume/checkout-resume.module';
 import { StripePaymentFormModule } from '@mugan86/stripe-payment-form';
 import { FormsModule } from '@angular/forms';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
     CheckoutRoutingModule,
     CheckoutResumeModule,
     StripePaymentFormModule,
-    FormsModule
+    FormsModule,
+    NgxPayPalModule
   ]
 })
 export class CheckoutModule { }

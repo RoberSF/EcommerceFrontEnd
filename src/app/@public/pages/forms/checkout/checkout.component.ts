@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { IMeData } from '../../../core/Interfaces/ISession';
 import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
@@ -19,19 +19,24 @@ import { IMail } from '../../../core/Interfaces/IMail';
 import { MailService } from '../../../../services/mail.service';
 import { IStock } from '@shop/core/Interfaces/IStock';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit  {
 
   meData: IMeData;
   key = environment.stripePublicKey;
   address = '';
   available = false;
   blockOnce = false;
+  paypal = false;
+  stripe = true;
+  public payPalConfig?: IPayPalConfig;
+
 
   constructor(private authService: AuthService, 
     private router: Router, 
@@ -58,6 +63,7 @@ export class CheckoutComponent implements OnInit {
       }
       this.meData = data;
     })
+
 
 
     // ****************************************************************************************************************************************************************************************************
@@ -134,10 +140,10 @@ export class CheckoutComponent implements OnInit {
     })
    }
 
-  
 
   ngOnInit() {
 
+    this.initConfig();
     //****************************************************************************************************************************************************************************************************
     //                              Redirecciones y guardar en el storage( info y rutas) para cuando me logueo antes de hacer el pago                                                           
     //****************************************************************************************************************************************************************************************************
@@ -163,6 +169,16 @@ export class CheckoutComponent implements OnInit {
       this.available = true
     }
   }
+
+  addPaypalScript() {
+    return new Promise((resolve,reject) => {
+      let scripttagelement = document.createElement('script');
+      scripttagelement.src = 'https://paypalobjects.com/api/checkout.js';
+      scripttagelement.onload = resolve;
+      document.body.appendChild(scripttagelement)
+    });
+  }
+
 
   async notAvailableProducts() {
     this.shoppingCartService.closeNav();
@@ -212,4 +228,103 @@ export class CheckoutComponent implements OnInit {
     this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
   }
 
+  payMethod(method) {
+    
+    if ( method === 'paypal' ) {
+      //paypal.Buttons().render(this.child.nativeElement)
+      this.paypal = true;
+      this.stripe = false
+    }
+
+    if( method === 'stripe') {
+      this.stripe = true;
+      this.paypal = false
+    }
+  }
+
+  private initConfig(): void {
+    this.payPalConfig = {
+    currency: 'EUR',
+    clientId: 'AbE0JovguFMYFBXv3gkf3GjFWZWAK7KBiVnsyXme_CZl8Vth6JeT6nUhtY4JrZHrdfpaHXSf58wPBWgs',
+    createOrderOnClient: (data) => <ICreateOrderRequest>{
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: 'EUR',
+            value: '9.99',
+            breakdown: {
+              item_total: {
+                currency_code: 'EUR',
+                value: '9.99'
+              }
+            }
+          },
+          items: [
+            {
+              name: 'Enterprise Subscription',
+              quantity: '1',
+              category: 'DIGITAL_GOODS',
+              unit_amount: {
+                currency_code: 'EUR',
+                value: '9.99',
+              },
+            }
+          ]
+        }
+      ]
+    },
+    advanced: {
+      commit: 'true'
+    },
+    style: {
+      label: 'paypal',
+      layout: 'vertical'
+    },
+    onApprove: (data, actions) => {
+      console.log('onApprove - transaction was approved, but not authorized', data, actions);
+      actions.order.get().then(details => {
+        // console.log('onApprove - you can get full order details inside onApprove: ', details);
+      });
+    },
+    onClientAuthorization: (data) => {
+      console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+    },
+    onCancel: (data, actions) => {
+      console.log('OnCancel', data, actions);
+      infoEventAlert('Transaction correctamente cancelada','')
+    },
+    onError: err => {
+      console.log('OnError', err);
+    },
+    onClick: (data, actions) => {
+      console.log('onClick', data, actions);
+    },
+  };
+  }
+
 }
+
+// paypalconfig: any = {
+//   env: 'sandbox',
+//   client: {
+//     sandbox: 'AbE0JovguFMYFBXv3gkf3GjFWZWAK7KBiVnsyXme_CZl8Vth6JeT6nUhtY4JrZHrdfpaHXSf58wPBWgs',
+//     production: 'EKxAHNKCy8PzPPK40ms1b1Tp9JMYS9HubQQukTmk26cXi-CWZy4yc2yQU3-dPzVx981TmWTEP-R6rV40'
+//   },
+//   commit:true,
+//   payment: (data,actions) => {
+//     return actions.payment.create({
+//       payment: {
+//         transactions: [
+//           { amount: {total: 10, currency: 'EUR'}}
+//         ]
+//       }
+//     })
+//   },
+//   onAuthorize: (data, actions) => {
+//     return actions.payment.execute().then( (payment) => {
+//       console.log('Pago efectuado');
+//       console.log(payment);
+//     })
+//   }
+// }

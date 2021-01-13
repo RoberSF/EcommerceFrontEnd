@@ -44,19 +44,15 @@
 
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
+                        <input (click)="payMethod('stripe')" id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
                         <label class="custom-control-label" for="credit">Credit card</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
-                        <label class="custom-control-label" for="debit">Debit card</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
+                        <input (click)="payMethod('paypal')" id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
                         <label class="custom-control-label" for="paypal">PayPal</label>
                     </div>
                 </div>
-                <div class="row">
+                <div *ngIf="!paypal" class="row">
                     <div class="col-lg">
 
                         <ng-stripe-pay-form [key]="key" [hidePostalCode]="true"></ng-stripe-pay-form>
@@ -64,7 +60,10 @@
                     </div>
                 </div>
                 <hr class="mb-4">
-                <button (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn" type="submit">Pagar pedido</button>
+                <button *ngIf="stripe" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn" type="submit">Pagar pedido</button>
+                <!-- <button *ngIf="paypal" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn paypal" type="submit">Pagar por PayPal</button> -->
+                <!-- <button (click)="addPaypalScript()" *ngIf="paypal" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn paypal" type="submit">Pagar por PayPal</button> -->
+                <ngx-paypal *ngIf="paypal" [config]="payPalConfig"></ngx-paypal>
             </form>
         </div>
 
