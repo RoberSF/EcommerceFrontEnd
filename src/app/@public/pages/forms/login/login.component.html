@@ -7,7 +7,7 @@
 
 
             <form ngNativeValidate #form="ngForm" (ngSubmit)="logIn(form)" class="form-horizontal form-material">
-                <a class="text-center db"><img src="assets/images/logo-icon.png" alt="Home" /><br/><img src="assets/images/logo-text.png" alt="Home" /></a>
+                <a class="text-center db"><img src="assets/images/door-open.png" alt="Home" class="door" /><br/><img class="logo" src="assets/images/myWebPageLogo.png" alt="Home" /></a>
                 <div class="form-group m-t-40">
                     <div class="col-xs-12">
                         <input #email="ngModel" [(ngModel)]="login.email" name="email " class="form-control " type="email " required placeholder="Email " pattern="^[a-zA-Z0-9.!#$%& '*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$">
