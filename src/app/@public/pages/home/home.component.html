@@ -10,4 +10,32 @@
 
     <app-product-categori-list *ngIf="listThree" [title]="'Juegos de PC'" [productList]="listThree" [showDesc]=false>
     </app-product-categori-list>
+
+    <div id="modalInfo" class="fondo-negro animated fadeIn" *ngIf="this.auth.modal">
+        <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Info:</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p> Bienvenid@!! Esta es una web e-commerce que he desarrollado.</p>
+                        <hr>
+                        <p>Algo sencillo para que pueda ser personalizable. Podrás encontrar: </p>
+                        <ul>- Lista de productos </ul>
+                        <ul>- Productos por categorías </ul>
+                        <ul>- Diferentes roles </ul>
+                        <ul>- Pagos vía paypal/ Tarjetas </ul>
+                        <ul>- Administración de la tienda </ul>
+                        <ul>- mucho más!! </ul>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button (click)="closeInfoModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close<span aria-hidden="true">&nbsp;<i class="far fa-times-circle"></i></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>

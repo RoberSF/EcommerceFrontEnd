@@ -19,8 +19,9 @@ export class HomeComponent implements OnInit {
   listTwo;
   listThree;
   loading: boolean;
+  modal = this.auth.modal
 
-  constructor(private apiService: ApiService, private auth: AuthService, 
+  constructor(private apiService: ApiService, public auth: AuthService, 
                 private userService: UsersService, private productService:ProductService) { }
 
   ngOnInit(): void {
@@ -75,6 +76,10 @@ export class HomeComponent implements OnInit {
       list.push(this.productList[Math.floor(Math.random() * limit)])
     }
     return list
+  }
+
+  closeInfoModal() {
+    this.auth.modal = false
   }
 
 }
