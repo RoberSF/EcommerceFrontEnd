@@ -8,6 +8,7 @@ import { ProductService } from '../../../services/product.service';
 import { IInfoPage } from '../../core/Interfaces/IResultData';
 import { TYPE_OPERATION } from '../../../@shared/constants/game.constants';
 import { closeAlert, loadData } from 'src/app/@shared/alerts/alerts';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-games',
@@ -29,7 +30,7 @@ export class GamesComponent implements OnInit {
   typeData: TYPE_OPERATION;
   loading: boolean;
 
-  constructor(private productService: ProductService, private activatedRoute: ActivatedRoute) { }
+  constructor(private productService: ProductService, private activatedRoute: ActivatedRoute,private auth: AuthService) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( (params) => {
