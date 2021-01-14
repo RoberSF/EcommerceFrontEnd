@@ -17,5 +17,10 @@
         "url": "/admin/tags",
         "label": "Tags(etiquetas)",
         "icon": "fas fa-atlas"
+    },
+    {
+        "url": "/admin/post-edit",
+        "label": "Posts",
+        "icon": "fas fa-atlas"
     }
 ]

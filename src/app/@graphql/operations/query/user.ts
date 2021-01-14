@@ -17,9 +17,18 @@ export const LOGIN_QUERY = gql`
       user {
                 ...UserObject
             }
+      menu {
+      title
+      submenu {
+        url
+        label
+        icon
+      }
     }
+    }
+
   }
-      ${ USER_FRAGMENT }
+      ${USER_FRAGMENT}
   `;
 
 
@@ -49,6 +58,15 @@ export const ME_DATA_QUERY = gql`
             user {
                 ...UserObject
             }
+            menu {
+              title
+              submenu {
+                url
+                label
+                icon
+              }
+    }
+            
         }
     }
     ${ USER_FRAGMENT }

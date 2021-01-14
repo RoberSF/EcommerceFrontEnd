@@ -30,6 +30,11 @@
         "icon": ""
     },
     {
+        "url": "/blog",
+        "label": "Blog",
+        "icon": ""
+    },
+    {
         "url": "/contact",
         "label": "Contacto",
         "icon": ""

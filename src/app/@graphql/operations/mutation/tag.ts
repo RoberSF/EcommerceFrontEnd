@@ -9,7 +9,7 @@ import { TAG_FRAGMENT } from '../fragment/tag';
 
 export const ADD_TAG = gql`
 
-mutation addGenre($tag: String!) {
+mutation addTag($tag: String!) {
     addTag(tag: $tag) {
       status
       message

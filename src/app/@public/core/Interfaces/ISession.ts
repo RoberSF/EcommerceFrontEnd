@@ -1,4 +1,5 @@
 import { IUser } from './IUser';
+import { IMenuUser } from './IMenuUser';
 export interface ISession {
     expiresIn: string,
     token?: string
@@ -7,6 +8,7 @@ export interface ISession {
 export interface IMeData {
     status: boolean,
     message?: string,
-    user?: IUser
+    user?: IUser,
+    menu?: IMenuUser
 }
 

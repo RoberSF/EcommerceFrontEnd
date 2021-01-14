@@ -24,6 +24,10 @@ const routes: Routes = [
       {
         path: 'tags',
         loadChildren: () => import('./tags/tags.module').then(m => m.TagsModule)
+      },
+      {
+        path: 'post-edit',
+        loadChildren: () => import('./post-edit/post-edit.module').then(m => m.PostEditModule)
       }
     ]
   }

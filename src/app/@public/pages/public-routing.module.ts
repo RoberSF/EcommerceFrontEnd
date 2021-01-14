@@ -4,6 +4,7 @@ import { AdminGuard } from 'src/app/guards/admin.guard';
 import { ShopGuard } from 'src/app/guards/shop.guard';
 import { PublicComponent } from './public.component';
 import { FaqModule } from './faq/faq.module';
+import { PostsModule } from './posts/posts.module';
 
 //**************************************************************************************************
 //                            Lazy loading                                                           
@@ -25,6 +26,14 @@ const routes: Routes = [
       {
         path: 'contact',
         loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
+      },
+      {
+        path: 'blog',
+        loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule)
+      },
+      {
+        path: 'blog/:id',
+        loadChildren: () => import('./posts/details/details.module').then(m => m.DetailsPostModule)
       },
       {
         path: 'settings',
