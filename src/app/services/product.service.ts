@@ -8,6 +8,7 @@ import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
 import { PRODUCT_DETAILS, PRODUCT_RANDOM } from '../@graphql/operations/query/product';
 import { SUBSCRIPTIONS_PRODUCT_SELECT_STOCK } from '../@graphql/operations/subscriptions/product';
+import { SEARCH_PRODUCTO_PLATFORM } from '../@graphql/operations/query/search';
 
 
 @Injectable({
@@ -80,6 +81,17 @@ stockUpdateListener(id: number) {
     return result.selectProductStockUpdate
   }));
 }
+
+  getByPlatformSearch(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, platform: Array<string>, searchValue: string) {
+    return this.get(SEARCH_PRODUCTO_PLATFORM, { page, itemsPage, active, platform, searchValue }).pipe(map((result: any) => {
+      const data = result.productsPlatformsSearch
+      return {
+        info: data.info,
+        result: this.manageInfo(data.products)
+      }
+
+    }));
+  }
 
 
 private setInObject(productObject, showDescription) {

@@ -29,6 +29,9 @@ export class GamesComponent implements OnInit {
   gamesPageInfo: IGamePageInfo;
   typeData: TYPE_OPERATION;
   loading: boolean;
+  searchOpen = false
+
+
 
   constructor(private productService: ProductService, private activatedRoute: ActivatedRoute,private auth: AuthService) {}
 
@@ -38,6 +41,7 @@ export class GamesComponent implements OnInit {
       loadData('Loading', `<div class="lds-roller"><div>`);
       this.typeData = params.type;
       this.selectPage = 1; // Cada vez que se cargue la página empezamos a contar desde la pag 1
+      // Estos valores vienen de la constante. Si no hubiera constante hab´ria que recuperar el id de alguna manera
       this.gamesPageInfo = GAMES_PAGES_INFO[`${params.type}/${params.filter}`]
       this.loadData() //cada vez que cambiemos de página haremos un "refresh" de la data
       this.loading = false;
@@ -63,6 +67,22 @@ export class GamesComponent implements OnInit {
     this.infoPage = data.info;
     closeAlert();
     this.loading = false;
+  }
+
+  search(value: string) {
+
+    // Asiganar array a this. IProduct
+    this.productService.getByPlatformSearch(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.gamesPageInfo.platformsIds, value).subscribe((data) => {
+      this.searchOpen = true;
+      this.productList = data.result
+      return
+    })
+
+  }
+
+  clean() {
+    this.searchOpen = false;
+    this.loadData()
   }
 
 

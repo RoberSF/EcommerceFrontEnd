@@ -6,6 +6,7 @@ import { GamesComponent } from './games.component';
 import { ProductCategoriListModule } from '../../../@shared/product-categori-list/product-categori-list.module';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { SearchBarModule } from '../../../@shared/search-bar/search-bar.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     GamesRoutingModule,
     ProductCategoriListModule,
     FormsModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    SearchBarModule
   ]
 })
 export class GamesModule { }
